@@ -183,32 +183,41 @@ f4 n q
 -- =================
 {- Ejercicio 11 -}
 -- =================
-
+-- Ejercicio 11 (a)
 {-
   problema eAprox (n:\enteros): \reales {
     requiere: {n \geq 0}
     asegura: { res  }
    }
 -}
-factorial :: Float -> Float
+factorial :: Integer -> Integer
 factorial 0 = 1
 factorial n = n * factorial (n - 1)
 
-eAprox :: Float -> Float
+eAprox :: Integer -> Float
 eAprox n
     | n == 0 = 1
-    | otherwise = 1.0 / (factorial n) + eAprox (n - 1)
+    | otherwise = 1.0 / (fromIntegral (factorial n)) + eAprox (n - 1)
 
-{-
---                            _ _               _ _
---   ___ ___  _ __  ___ _   _| | |_ __ _ _ __  / / |
---  / __/ _ \| '_ \/ __| | | | | __/ _` | '__| | | |
--- | (_| (_) | | | \__ \ |_| | | || (_| | |    | | |
---  \___\___/|_| |_|___/\__,_|_|\__\__,_|_|    |_|_|
---
- No puedo tener los tipos del enunciado, porque factorial está
- en una división float. ¿Cómo se resuelve este asunto?-}
+-- Ejercicio 11 (b)
+e :: Float
+e = eAprox 10
 
 -- =================
 {- Ejercicio 12 -}
 -- =================
+
+{-
+  problema raizDe2Aprox (n:\enteros): \reales {
+    requiere: {n >= 1}
+    asegura: {}
+   }
+-}
+-- Auxiliar fracciones continuas de raíz de 2
+sucesionInfernal :: Integer -> Float
+sucesionInfernal n
+    | n == 1 = 2
+    | otherwise = 2 + 1 / sucesionInfernal (n - 1)
+
+raizDe2Aprox :: Integer -> Float
+raizDe2Aprox n = sucesionInfernal n - 1
