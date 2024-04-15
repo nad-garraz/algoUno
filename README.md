@@ -1,12 +1,13 @@
-# algoUno: MiRepo de Introducción a la progamación
- La materia Indroducción a la programación (ex Algo1).
+# algoUno: MiRepo de Introducción a la programación
+ La materia Introducción a la programación (ex Algo1, ponele...).
 
 **Lo que esto es:**
  * Algunas notas de cosas que me parecen relevantes
  * Ejercicios de las guías (sin garantía de que estén bien)
 
 **Lo que esto __NO__ es:**
- * Algunas notas de cosas que me parecen relevantes
- * Ejercicios de las guías (sin garantía de que estén bien)
+ * Ejercicios resueltos para mirar sin cuidado.
 
-Invito a quien esté viendo esto a encontrar errores o mejores prácticas y hacérmelo saber! (☞⌐▀͡ ͜ʖ͡▀ )☞.
+Invito a quien esté leyendo esto a encontrar mejores prácticas y errores y hacérmelo saber!
+
+^_^/
