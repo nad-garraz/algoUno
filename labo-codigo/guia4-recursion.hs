@@ -221,3 +221,62 @@ sucesionInfernal n
 
 raizDe2Aprox :: Integer -> Float
 raizDe2Aprox n = sucesionInfernal n - 1
+
+
+-- =================
+{- Ejercicio 13 -}
+-- =================
+
+{-
+  problema dobleSumatoria (n:\naturales, m: \naturales): \naturales {
+    requiere: {True}
+    asegura: { res = \sumatoria{j=1}{m} \sumatoria{i=1}{n} i^j }
+   }
+-}
+
+-- auxiliares
+f2int :: Integer -> Integer -> Integer
+f2int n q
+    | n == 1 = q
+    | otherwise = q ^ n + f2int (n - 1) q
+
+dobleSumatoria :: Integer -> Integer -> Integer
+dobleSumatoria n m
+    | m == 1 = f2int n 1
+    | otherwise =  (f2int n m) + dobleSumatoria n (m - 1)
+
+-- =================
+{- Ejercicio 14 -}
+-- =================
+
+{-
+  problema sumaPotencias (n:\naturales, m: \naturales, q: \naturales): \naturales {
+    requiere: {True}
+    asegura: { res = \sumatoria{a=1}{m} \sumatoria{b=1}{n} q^{a+b} }
+   }
+-}
+
+sumaPotencias :: Integer -> Integer -> Integer -> Integer
+sumaPotencias n m q
+    | m == 1 = q * f2int n q
+    | otherwise = (q ^ m) * f2int n q + sumaPotencias n (m - 1) q
+
+-- =================
+{- Ejercicio 15 -}
+-- =================
+
+{-
+  problema sumaRacionales (n:\naturales, m: \naturales): \reales {
+    requiere: {True}
+    asegura: { res = \sumatoria{p = 1}{n} \sumatoria{q = 1}{m} p/q }
+   }
+-}
+sumaDistintosDenom :: Float -> Float
+sumaDistintosDenom q
+    | q == 1 = 1 / q
+    | otherwise = (1 / q ) + sumaDistintosDenom (q - 1)
+
+sumaRacionales :: Float -> Float -> Float
+sumaRacionales n m
+    | n == 1 = sumaDistintosDenom m
+    | otherwise = (n * sumaDistintosDenom m) + sumaRacionales (n-1) m
