@@ -271,6 +271,7 @@ sumaPotencias n m q
     asegura: { res = \sumatoria{p = 1}{n} \sumatoria{q = 1}{m} p/q }
    }
 -}
+
 sumaDistintosDenom :: Float -> Float
 sumaDistintosDenom q
     | q == 1 = 1 / q
