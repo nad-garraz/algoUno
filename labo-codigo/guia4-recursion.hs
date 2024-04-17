@@ -176,6 +176,7 @@ f3 n q
 -}
 
 f4 :: Integer -> Float -> Float
+f4 0 _ = 1 -- ponele...
 f4 n q
     | n == 1 = q ^ n + q ^ (n + 1)
     | otherwise = q ^ (2 * n) + q ^ (2 * n - 1) + f4 (n - 1) q
@@ -195,9 +196,8 @@ factorial 0 = 1
 factorial n = n * factorial (n - 1)
 
 eAprox :: Integer -> Float
-eAprox n
-    | n == 0 = 1
-    | otherwise = 1.0 / (fromIntegral (factorial n)) + eAprox (n - 1)
+eAprox 0 = 1
+eAprox n = 1.0 / (fromIntegral (factorial n)) + eAprox (n - 1)
 
 -- Ejercicio 11 (b)
 e :: Float
@@ -215,9 +215,8 @@ e = eAprox 10
 -}
 -- Auxiliar fracciones continuas de raíz de 2
 sucesionInfernal :: Integer -> Float
-sucesionInfernal n
-    | n == 1 = 2
-    | otherwise = 2 + 1 / sucesionInfernal (n - 1)
+sucesionInfernal 1 = 2
+sucesionInfernal n = 2 + 1 / sucesionInfernal (n - 1)
 
 raizDe2Aprox :: Integer -> Float
 raizDe2Aprox n = sucesionInfernal n - 1
