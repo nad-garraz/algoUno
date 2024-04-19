@@ -280,3 +280,20 @@ sumaRacionales :: Float -> Float -> Float
 sumaRacionales n m
     | n == 1 = sumaDistintosDenom m
     | otherwise = (n * sumaDistintosDenom m) + sumaRacionales (n-1) m
+
+
+
+-- =================
+{- Ejercicio 15 -}
+-- =================
+-- Ejercicio 15 (a)
+
+
+
+menorDivisor :: Integer -> Integer
+menorDivisor n = aux 2
+    where
+    aux x
+        | x == n = n
+        | mod n x /= 0 = aux(x + 1)
+        | otherwise = x
