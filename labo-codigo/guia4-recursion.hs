@@ -284,16 +284,20 @@ sumaRacionales n m
 
 
 -- =================
-{- Ejercicio 15 -}
+{- Ejercicio 16 -}
 -- =================
--- Ejercicio 15 (a)
-
-
+-- Ejercicio 16 (a)
 
 menorDivisor :: Integer -> Integer
+menorDivisor 1 = 1
 menorDivisor n = aux 2
     where
     aux x
         | x == n = n
         | mod n x /= 0 = aux(x + 1)
         | otherwise = x
+
+
+-- Ejercicio 16 (b)
+esPrimo :: Integer -> Bool
+esPrimo n = menorDivisor n == n
