@@ -1,3 +1,12 @@
+{-
+  ____       _         ____            _ _     _            
+ / ___|_   _(_) __ _  | ___|          | (_)___| |_ __ _ ___ 
+| |  _| | | | |/ _` | |___ \   _____  | | / __| __/ _` / __|
+| |_| | |_| | | (_| |  ___) | |_____| | | \__ \ || (_| \__ \
+ \____|\__,_|_|\__,_| |____/          |_|_|___/\__\__,_|___/
+-}
+
+-- entrada en calor
 sumaLista :: [Integer] -> Integer
 sumaLista [] = 0
 sumaLista (x:xs) = x + sumaLista xs
@@ -5,6 +14,8 @@ sumaLista (x:xs) = x + sumaLista xs
 pertenece :: Integer -> [Integer] -> Bool
 pertenece e [] = False
 pertenece e (x:xs) = e == x || pertenece e xs
+
+-- fin entrada en calor
 
 -- =================
 {- Ejercicio 1 -}
