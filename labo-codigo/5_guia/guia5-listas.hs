@@ -1,3 +1,5 @@
+
+
 {-
 --   ____       _         ____            _ _     _
 --  / ___|_   _(_) __ _  | ___|          | (_)___| |_ __ _ ___
@@ -5,6 +7,18 @@
 -- | |_| | |_| | | (_| |  ___) | |_____| | | \__ \ || (_| \__ \
 --  \____|\__,_|_|\__,_| |____/          |_|_|___/\__\__,_|___/
 -}
+
+import Test.HUnit
+
+testSumaLista1 = TestCase $ assertEqual "Lista de numeros" 10 (sumaLista [1, 2, 3, 4])
+testSumaLista2 = TestCase $ assertEqual "Casos bordes" 0 (sumaLista [])
+-- sumaLista     input [1, 2, 3, 4]  -> output expected 10
+
+main :: IO ()
+main = do
+    runTestTT $ TestList [testSumaLista1, testSumaLista2]
+    return ()
+
 
 -- entrada en calor
 sumaLista :: [Integer] -> Integer
@@ -124,28 +138,16 @@ eliminarRepetidos (x : xs) = x : eliminarRepetidos (quitarTodos x xs)
 
 -- Ejercicio 2 - (8)
 mismosElementos :: (Eq t) => [t] -> [t] -> Bool
-mismosElementos [] _ = False
-mismosElementos _ [] = False
--- mismosElementos [a] [b] = a == b
-mismosElementos (x : xs) ys = dobleInclusion (x : xs) ys && mismosElementos (quitarTodos x ys) xs
-  where
-    dobleInclusion :: (Eq t) => [t] -> [t] -> Bool
-    dobleInclusion (x : xs) (y : ys) = pertenece x (y : ys)
+mismosElementos xs ys = todosElementosIncluidos xs ys && todosElementosIncluidos ys xs
 
---
---
--- mismosElementos :: (Eq a) => [a] -> [a] -> Bool -- pedir ayuda
--- mismosElementos s r = todosPertenecen s r && todosPertenecen r s
---
--- todosPertenecen :: (Eq a) => [a] -> [a] -> Bool -- funcion aux
--- todosPerteneces [] _ = True
--- todosPertenecen (x : xs) ys = pertenece x ys && todosPerteneces xs ys
+todosElementosIncluidos :: (Eq t) => [t] -> [t] -> Bool
+todosElementosIncluidos [] _ = True
+todosElementosIncluidos (x:xs) ys = pertenece x ys && todosElementosIncluidos xs ys
 
 -- Ejercicio 2 - (9)
 capicua :: (Eq a) => [a] -> Bool
 capicua [] = True
-capicua [_] = True
-capicua xs = cabeza xs == ultimo xs && capicua (cola (principio xs))
+capicua xs = not (cabeza xs /= ultimo xs)
 
 -- =================
 {- Ejercicio 3 -}
@@ -209,9 +211,9 @@ ordenar ns = reverso (decreciente ns)
 borrarEspaciosRepetidos :: [Char] -> [Char]
 borrarEspaciosRepetidos [] = []
 borrarEspaciosRepetidos (c : []) = [c]
-borrarEspaciosRepetidos (c1 : cs)
-    | c1 == ' ' && cabeza cs == ' ' = borrarEspaciosRepetidos cs
-    | otherwise = c1 : borrarEspaciosRepetidos cs
+borrarEspaciosRepetidos (c : cs)
+    | c == ' ' && cabeza cs == ' ' = borrarEspaciosRepetidos cs
+    | otherwise = c : borrarEspaciosRepetidos cs
 
 -- Ejercicio 4 - (b)
 contarPalabras :: [Char] -> Integer
@@ -262,19 +264,29 @@ palabras cs = primeraPalabra (limpiarEspacios cs) : elRestoDePalabras (limpiarEs
     limpiarEspacios :: [Char] -> [Char]
     limpiarEspacios cs = borrarEspacioIniFin (borrarEspaciosRepetidos cs)
 
+-- ===================
+-- TODO 01/05/2024: Hacer fucking ejercicio
+-- ===================
+--
 -- palabrasMasLarga :: [Char] -> [Char]
-
+--
 longString :: [Char] -> Integer
 longString [] = 0
 longString (c : cs) = 1 + longString cs
 
 rmLeftAndRightSpace :: [Char] -> [Char]
 rmLeftAndRightSpace [] = []
-rmLeftAndRightSpace (' ' : cs) = rmLeftAndRightSpace cs
+rmLeftAndRightSpace (' ' : cs) = rmLeftAndRightSpace (rmRepeatSpace cs)
 rmLeftAndRightSpace cs = rmRightSpace cs
 
 rmRightSpace :: [Char] -> [Char]
 rmRightSpace [] = []
-rmRightSpace (c : cs)
-  | c == ' ' = rmRightSpace cs
-  | otherwise = c : rmRightSpace cs
+rmRightSpace (' ' : []) = []
+rmRightSpace (c : cs) = c : rmRightSpace cs
+
+rmRepeatSpace :: [Char] -> [Char]
+rmRepeatSpace [] = []
+rmRepeatSpace (c : []) = [c]
+rmRepeatSpace (c:d:cs)
+  | c == d && d == ' ' = rmRepeatSpace (d:cs)
+  | otherwise = c : rmRepeatSpace (d:cs)
