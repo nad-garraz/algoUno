@@ -11,9 +11,16 @@ sumaLista :: [Integer] -> Integer
 sumaLista [] = 0
 sumaLista (x : xs) = x + sumaLista xs
 
-pertenece :: Integer -> [Integer] -> Bool
+pertenece :: (Eq t) => t -> [t] -> Bool
 pertenece e [] = False
 pertenece e (x : xs) = e == x || pertenece e xs
+
+cola :: (Eq t) => [t] -> [t]
+cola [] = []
+cola (x : xs) = xs
+
+cabeza :: (Eq t) => [t] -> t
+cabeza (x : xs) = x
 
 -- fin entrada en calor
 
@@ -38,12 +45,14 @@ principio (x : xs)
     | longitud xs == 1 = [x]
     | otherwise = x : principio xs
 
--- Preguntar poro el caso de lista con un solo elemento. Se devuele vacío?
+principio2 :: [a] -> [a]
+principio2 [_] = []
+principio2 (x : xs) = x : principio2 xs
 
 -- Ejercicio 1 - (4)
 reverso :: [t] -> [t]
 reverso [] = []
-reverso x = ultimo x : reverso (principio x)
+reverso xs = ultimo xs : reverso (principio xs)
 
 -- =================
 {- Ejercicio 2 -}
@@ -65,6 +74,11 @@ todosIguales (x : xs)
   where
     firstElement (x : xs) = x
 
+todosIguales2 :: (Eq t) => [t] -> Bool
+todosIguales2 [] = True
+todosIguales2 [_] = True
+todosIguales2 (x : y : ys) = x == y && todosIguales2 (y : ys)
+
 -- Ejercicio 2 - (3)
 todosDistintos :: (Eq t) => [t] -> Bool
 todosDistintos [] = True
@@ -72,41 +86,195 @@ todosDistintos (x : xs)
     | pertenece2 x xs = False
     | otherwise = todosDistintos xs
 
+todosDistintos2 :: (Eq t) => [t] -> Bool
+todosDistintos2 [] = True
+todosDistintos2 (x : xs) = not (pertenece x xs) && todosDistintos2 (xs)
+
+-- No funca, solo compara consecutivos.
+todosDistintos3 :: (Eq a) => [a] -> Bool
+todosDistintos3 [] = True
+todosDistintos3 [x] = True
+todosDistintos3 (x : y : ys)
+    | x == y = False
+    | otherwise = todosDistintos3 (y : ys)
+
 -- Ejercicio 2 - (4)
 hayRepetidos :: (Eq t) => [t] -> Bool
 hayRepetidos [] = False
-hayRepetidos (x : xs) = pertenece2 x xs || hayRepetidos xs
+hayRepetidos (x : xs) = pertenece x xs || hayRepetidos xs
 
 -- Ejercicio 2 - (5)
 quitar :: (Eq t) => t -> [t] -> [t]
-quitar target (pri : resto)
-    | target /= pri = pri : quitar target resto
-    | otherwise = resto
+quitar _ [] = []
+quitar e (x : xs)
+    | e /= x = x : quitar e xs
+    | otherwise = xs
 
 -- Ejercicio 2 - (6)
 quitarTodos :: (Eq t) => t -> [t] -> [t]
-quitarTodos target lista = [x | x <- lista, x /= target]
-
--- version alternativa.
-quitarTodos2 :: (Eq t) => t -> [t] -> [t]
-quitarTodos2 _ [] = []
-quitarTodos2 target (pri : resto)
-    | target /= pri = pri : quitarTodos2 target (resto)
-    | otherwise = quitarTodos2 target resto
+quitarTodos _ [] = []
+quitarTodos e (x : xs)
+    | e /= x = x : quitarTodos e xs
+    | otherwise = quitarTodos e xs
 
 -- Ejercicio 2 - (7)
 eliminarRepetidos :: (Eq t) => [t] -> [t]
 eliminarRepetidos [] = []
-eliminarRepetidos (pri : rest)
-    | pertenece2 pri rest = pri : eliminarRepetidos (quitarTodos2 pri rest)
-    | otherwise = pri : eliminarRepetidos rest
+eliminarRepetidos (x : xs) = x : eliminarRepetidos (quitarTodos x xs)
 
 -- Ejercicio 2 - (8)
 mismosElementos :: (Eq t) => [t] -> [t] -> Bool
-mismosElementos _ [] = False
 mismosElementos [] _ = False
-mismosElementos lista_a lista_b
-    | compararElPrimeroConLista lista_a lista_b = mismosElementos (tail lista_a) (lista_b)
-    | otherwise = False
+mismosElementos _ [] = False
+-- mismosElementos [a] [b] = a == b
+mismosElementos (x : xs) ys = dobleInclusion (x : xs) ys && mismosElementos (quitarTodos x ys) xs
   where
-    compararElPrimeroConLista lista_a lista b = pertenece2 (head (lista_a)) lista_b
+    dobleInclusion :: (Eq t) => [t] -> [t] -> Bool
+    dobleInclusion (x : xs) (y : ys) = pertenece x (y : ys)
+
+--
+--
+-- mismosElementos :: (Eq a) => [a] -> [a] -> Bool -- pedir ayuda
+-- mismosElementos s r = todosPertenecen s r && todosPertenecen r s
+--
+-- todosPertenecen :: (Eq a) => [a] -> [a] -> Bool -- funcion aux
+-- todosPerteneces [] _ = True
+-- todosPertenecen (x : xs) ys = pertenece x ys && todosPerteneces xs ys
+
+-- Ejercicio 2 - (9)
+capicua :: (Eq a) => [a] -> Bool
+capicua [] = True
+capicua [_] = True
+capicua xs = cabeza xs == ultimo xs && capicua (cola (principio xs))
+
+-- =================
+{- Ejercicio 3 -}
+-- =================
+-- Ejercicio 3 - (1)
+sumatoria :: [Integer] -> Integer
+sumatoria [] = 0
+sumatoria (x : xs) = x + sumatoria xs
+
+-- Ejercicio 3 - (2)
+productoria :: [Integer] -> Integer
+productoria [] = 0
+productoria (x : xs) = x * productoria xs
+
+-- Ejercicio 3 - (3)
+maximo :: [Integer] -> Integer
+maximo [a] = a
+maximo (x : xs)
+    | x <= cabeza xs = maximo xs
+    | otherwise = maximo (x : cola xs)
+
+-- Ejercicio 3 - (4)
+sumarN :: Integer -> [Integer] -> [Integer]
+sumarN _ [] = []
+sumarN n (m : ms) = n + m : sumarN n ms
+
+-- Ejercicio 3 - (5)
+sumarElPrimero :: [Integer] -> [Integer]
+sumarElPrimero ns = sumarN (cabeza ns) ns
+
+-- Ejercicio 3 - (6)
+sumarElUltimo :: [Integer] -> [Integer]
+sumarElUltimo ns = sumarN (cabeza (reverso ns)) ns
+
+-- Ejercicio 3 - (7)
+pares :: [Integer] -> [Integer]
+pares [] = []
+pares ns
+    | mod (cabeza ns) 2 == 0 = cabeza ns : pares (cola ns)
+    | otherwise = pares (cola ns)
+
+-- Ejercicio 3 - (8)
+multiplosDeN :: Integer -> [Integer] -> [Integer]
+multiplosDeN n [] = []
+multiplosDeN n ns
+    | mod (cabeza ns) n == 0 = cabeza ns : multiplosDeN n (cola ns)
+    | otherwise = multiplosDeN n (cola ns)
+
+-- Ejercicio 3 - (9)
+ordenar :: [Integer] -> [Integer]
+ordenar ns = reverso (decreciente ns)
+  where
+    decreciente :: [Integer] -> [Integer]
+    decreciente [] = []
+    decreciente ns = maximo ns : decreciente (quitar (maximo ns) ns)
+
+-- =================
+{- Ejercicio 4 -}
+-- =================
+-- Ejercicio 4 - (a)
+borrarEspaciosRepetidos :: [Char] -> [Char]
+borrarEspaciosRepetidos [] = []
+borrarEspaciosRepetidos (c : []) = [c]
+borrarEspaciosRepetidos (c1 : cs)
+    | c1 == ' ' && cabeza cs == ' ' = borrarEspaciosRepetidos cs
+    | otherwise = c1 : borrarEspaciosRepetidos cs
+
+-- Ejercicio 4 - (b)
+contarPalabras :: [Char] -> Integer
+contarPalabras [] = 0
+contarPalabras cs = 1 + contarEspacios (borrarEspacioIniFin (borrarEspaciosRepetidos cs))
+
+-- aux borrar espacios al final y al principio del string
+borrarEspacioIniFin :: [Char] -> [Char]
+borrarEspacioIniFin [] = []
+borrarEspacioIniFin (c : cs)
+    | c == ' ' = borrarEspacioFin cs
+    | otherwise = borrarEspacioFin (c : cs)
+
+-- aux borrar espacios al final del string
+borrarEspacioFin :: [Char] -> [Char]
+borrarEspacioFin (x : [])
+    | x == ' ' = []
+    | otherwise = [x]
+borrarEspacioFin (x : cs) = x : borrarEspacioFin cs
+
+contarEspacios :: [Char] -> Integer
+contarEspacios [] = 0
+contarEspacios (c : cs)
+    | c == ' ' = 1 + contarEspacios cs
+    | otherwise = 0 + contarEspacios cs
+
+-- -- Ejercicio 4 - (c)
+palabras :: [Char] -> [[Char]]
+palabras cs = primeraPalabra (limpiarEspacios cs) : elRestoDePalabras (limpiarEspacios cs)
+  where
+    -- "ab c def g" -> ["c", "def", "g"]
+    elRestoDePalabras :: [Char] -> [[Char]]
+    elRestoDePalabras [] = []
+    elRestoDePalabras (' ' : cs) = cortarEnEspacio (limpiarEspacios cs) : elRestoDePalabras cs
+    elRestoDePalabras (c : cs) = elRestoDePalabras cs
+
+    primeraPalabra :: [Char] -> [Char]
+    primeraPalabra [] = []
+    primeraPalabra (c : ' ' : xs) = [c]
+    primeraPalabra (c : cs) = c : primeraPalabra cs
+
+    cortarEnEspacio :: [Char] -> [Char]
+    cortarEnEspacio [] = []
+    cortarEnEspacio (c : cs)
+        | c == ' ' = []
+        | otherwise = c : cortarEnEspacio cs
+
+    limpiarEspacios :: [Char] -> [Char]
+    limpiarEspacios cs = borrarEspacioIniFin (borrarEspaciosRepetidos cs)
+
+-- palabrasMasLarga :: [Char] -> [Char]
+
+longString :: [Char] -> Integer
+longString [] = 0
+longString (c : cs) = 1 + longString cs
+
+rmLeftAndRightSpace :: [Char] -> [Char]
+rmLeftAndRightSpace [] = []
+rmLeftAndRightSpace (' ' : cs) = rmLeftAndRightSpace cs
+rmLeftAndRightSpace cs = rmRightSpace cs
+
+rmRightSpace :: [Char] -> [Char]
+rmRightSpace [] = []
+rmRightSpace (c : cs)
+  | c == ' ' = rmRightSpace cs
+  | otherwise = c : rmRightSpace cs
