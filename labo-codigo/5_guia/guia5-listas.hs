@@ -1,29 +1,24 @@
-
-
 {-
---   ____       _         ____            _ _     _
---  / ___|_   _(_) __ _  | ___|          | (_)___| |_ __ _ ___
--- | |  _| | | | |/ _` | |___ \   _____  | | / __| __/ _` / __|
--- | |_| | |_| | | (_| |  ___) | |_____| | | \__ \ || (_| \__ \
---  \____|\__,_|_|\__,_| |____/          |_|_|___/\__\__,_|___/
+   ____       _         ____            _ _     _
+  / ___|_   _(_) __ _  | ___|          | (_)___| |_ __ _ ___
+ | |  _| | | | |/ _` | |___ \   _____  | | / __| __/ _` / __|
+ | |_| | |_| | | (_| |  ___) | |_____| | | \__ \ || (_| \__ \
+  \____|\__,_|_|\__,_| |____/          |_|_|___/\__\__,_|___/
 -}
 
+-- Módulo para testeo
 import Test.HUnit
-
-testSumaLista1 = TestCase $ assertEqual "Lista de numeros" 10 (sumaLista [1, 2, 3, 4])
-testSumaLista2 = TestCase $ assertEqual "Casos bordes" 0 (sumaLista [])
--- sumaLista     input [1, 2, 3, 4]  -> output expected 10
-
-main :: IO ()
-main = do
-    runTestTT $ TestList [testSumaLista1, testSumaLista2]
-    return ()
-
 
 -- entrada en calor
 sumaLista :: [Integer] -> Integer
 sumaLista [] = 0
 sumaLista (x : xs) = x + sumaLista xs
+
+-- Casos de testeo para sumalista
+testSumaLista1 :: Test
+testSumaLista1 = TestCase $ assertEqual "caso 1 sumaLista" 10 (sumaLista [1, 2, 3, 4])
+testSumaLista2 :: Test
+testSumaLista2 = TestCase $ assertEqual "caso 2 sumaLista" 0 (sumaLista [])
 
 pertenece :: (Eq t) => t -> [t] -> Bool
 pertenece e [] = False
@@ -142,7 +137,7 @@ mismosElementos xs ys = todosElementosIncluidos xs ys && todosElementosIncluidos
 
 todosElementosIncluidos :: (Eq t) => [t] -> [t] -> Bool
 todosElementosIncluidos [] _ = True
-todosElementosIncluidos (x:xs) ys = pertenece x ys && todosElementosIncluidos xs ys
+todosElementosIncluidos (x : xs) ys = pertenece x ys && todosElementosIncluidos xs ys
 
 -- Ejercicio 2 - (9)
 capicua :: (Eq a) => [a] -> Bool
@@ -265,28 +260,104 @@ palabras cs = primeraPalabra (limpiarEspacios cs) : elRestoDePalabras (limpiarEs
     limpiarEspacios cs = borrarEspacioIniFin (borrarEspaciosRepetidos cs)
 
 -- ===================
--- TODO 01/05/2024: Hacer fucking ejercicio
--- ===================
---
--- palabrasMasLarga :: [Char] -> [Char]
---
-longString :: [Char] -> Integer
-longString [] = 0
-longString (c : cs) = 1 + longString cs
+--  Aca refrito un montón de funciones que ya hice, para practicar nada más. Pero el ejecicio
+--  sale mucho más corto usando las funciones hechas a lo largo de la práctica.
 
-rmLeftAndRightSpace :: [Char] -> [Char]
-rmLeftAndRightSpace [] = []
-rmLeftAndRightSpace (' ' : cs) = rmLeftAndRightSpace (rmRepeatSpace cs)
-rmLeftAndRightSpace cs = rmRightSpace cs
+palabraMasLarga :: [Char] -> [Char]
+palabraMasLarga [] = []
+palabraMasLarga cs = aux (lsDePalabras (rmLeftAndRightSpace cs))
+  where
+    aux :: [[Char]] -> [Char]
+    aux [c] = c
+    aux (c : d : ds)
+        | lengthString c <= lengthString d = aux (d : ds)
+        | otherwise = aux (c : ds)
 
-rmRightSpace :: [Char] -> [Char]
-rmRightSpace [] = []
-rmRightSpace (' ' : []) = []
-rmRightSpace (c : cs) = c : rmRightSpace cs
+    lsDePalabras :: [Char] -> [[Char]]
+    lsDePalabras [] = []
+    lsDePalabras cs = restoPalabras (rmLeftAndRightSpace cs)
 
-rmRepeatSpace :: [Char] -> [Char]
-rmRepeatSpace [] = []
-rmRepeatSpace (c : []) = [c]
-rmRepeatSpace (c:d:cs)
-  | c == d && d == ' ' = rmRepeatSpace (d:cs)
-  | otherwise = c : rmRepeatSpace (d:cs)
+    lsStr2Strlength :: [[Char]] -> [Integer]
+    lsStr2Strlength [] = []
+    lsStr2Strlength (s : ss) = lengthString s : lsStr2Strlength ss
+
+    lengthString :: [Char] -> Integer
+    lengthString [] = 0
+    lengthString (c : cs) = 1 + lengthString cs
+
+    primeraPalabra2 :: [Char] -> [Char]
+    primeraPalabra2 [] = []
+    primeraPalabra2 (' ' : cs) = []
+    primeraPalabra2 (c : cs) = c : primeraPalabra2 cs
+
+    restoPalabras :: [Char] -> [[Char]]
+    restoPalabras [] = []
+    restoPalabras cs = primeraPalabra2 cs : restoPalabras (cortoEnEspacio cs)
+
+    cortoEnEspacio :: [Char] -> [Char]
+    cortoEnEspacio [] = []
+    cortoEnEspacio (c : cs)
+        | c == ' ' = cs
+        | otherwise = cortoEnEspacio cs
+
+    rmLeftAndRightSpace :: [Char] -> [Char]
+    rmLeftAndRightSpace [] = []
+    rmLeftAndRightSpace (' ' : cs) = rmLeftAndRightSpace (rmRepeatSpace cs)
+    rmLeftAndRightSpace cs = rmRightSpace cs
+
+    rmRightSpace :: [Char] -> [Char]
+    rmRightSpace [] = []
+    rmRightSpace (' ' : []) = []
+    rmRightSpace (c : cs) = c : rmRightSpace cs
+
+    rmRepeatSpace :: [Char] -> [Char]
+    rmRepeatSpace [] = []
+    rmRepeatSpace (c : []) = [c]
+    rmRepeatSpace (c : d : cs)
+        | c == d && d == ' ' = rmRepeatSpace (d : cs)
+        | otherwise = c : rmRepeatSpace (d : cs)
+
+{-
+  _____         _
+ |_   _|__  ___| |_ ___  ___
+   | |/ _ \/ __| __/ _ \/ _ \
+   | |  __/\__ \ ||  __/ (_) |
+   |_|\___||___/\__\___|\___/
+
+-}
+-- Función con comandos para que corra al ejecutar el archivo.
+
+main :: IO ()
+main = do
+    runTestTT $ TestList [testSumaLista1, testSumaLista2]
+    runTestTT $ TestList [testList_palabraMasLarga]
+    return ()
+
+tests_primeraPalabra :: [(String, String)]
+tests_primeraPalabra = [("a", "  a  "), ("ab", "ab cd"), ("ab", "ab  cd "), ("ab", " ab  cd  "), ("ab", "  ab  cd  ")]
+
+tests_cortoEnEspacio :: [(String, String)]
+tests_cortoEnEspacio = [("", "a"), ("cd", "ab cd"), ("cd ef", "ab cd ef")]
+
+tests_lsDePalabras :: [([String], String)]
+tests_lsDePalabras = [(["a"], " a"), (["a"], "a "), (["a"], " a"), (["ab", "cd"], "  ab  cd  "), (["ab", "cd", "ef"], " ab  cd ef"), (["Hola", "Manola"], "Hola Manola")]
+
+tCase_palabraMasLarga :: [(String, String)]
+tCase_palabraMasLarga = [("a", " a"), ("av", "av "), ("av", " av   c "), ("abc", " abc  ab  cd  "), ("abcde", " ab  cd ef    abcde"), ("Manola", "Hola Manola"), ("da", "da error")]
+
+---- Esto genera un TestCase para cada par de (expected, output) de la lista tests_...
+generateTestCase :: ([Char], [Char]) -> Test
+generateTestCase (expected, input) = TestCase (assertEqual ("Caso \"" ++ input ++ "\"") expected (palabraMasLarga (input)))
+
+-- generateTestCase (expected, input) = TestCase (assertEqual ("Caso \"" ++ input ++ "\"") expected (cortoEnEspacio input))
+-- generateTestCase (expected, input) = TestCase (assertEqual ("Caso \"" ++ input ++ "\"") expected (lsDePalabras input))
+
+-- esto genera una TestList, mapeando generateTestCase a tests_primeraPalabra.
+-- testList_palabraMasLarga :: Test
+-- testList_palabraMasLarga = TestList (map generateTestCase tests_primeraPalabra)
+-- testList_cortoEnEspacio :: Test
+-- testList_cortoEnEspacio = TestList (map generateTestCase tests_cortoEnEspacio)
+-- testList_lsDePalabras :: Test
+-- testList_lsDePalabras = TestList (map generateTestCase tests_lsDePalabras)
+testList_palabraMasLarga :: Test
+testList_palabraMasLarga = TestList (map generateTestCase tCase_palabraMasLarga)
