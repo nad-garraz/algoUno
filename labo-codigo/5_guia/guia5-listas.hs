@@ -202,7 +202,7 @@ ordenar ns = reverso (decreciente ns)
 -- =================
 {- Ejercicio 4 -}
 -- =================
--- Ejercicio 4 - (a)
+-- Ejercicio 4 - (a.a)
 borrarEspaciosRepetidos :: [Char] -> [Char]
 borrarEspaciosRepetidos [] = []
 borrarEspaciosRepetidos (c : []) = [c]
@@ -210,7 +210,7 @@ borrarEspaciosRepetidos (c : cs)
     | c == ' ' && cabeza cs == ' ' = borrarEspaciosRepetidos cs
     | otherwise = c : borrarEspaciosRepetidos cs
 
--- Ejercicio 4 - (b)
+-- Ejercicio 4 - (a.b)
 contarPalabras :: [Char] -> Integer
 contarPalabras [] = 0
 contarPalabras cs = 1 + contarEspacios (borrarEspacioIniFin (borrarEspaciosRepetidos cs))
@@ -235,7 +235,7 @@ contarEspacios (c : cs)
     | c == ' ' = 1 + contarEspacios cs
     | otherwise = 0 + contarEspacios cs
 
--- -- Ejercicio 4 - (c)
+-- -- Ejercicio 4 - (a.c)
 palabras :: [Char] -> [[Char]]
 palabras cs = primeraPalabra (limpiarEspacios cs) : elRestoDePalabras (limpiarEspacios cs)
   where
@@ -316,6 +316,81 @@ palabraMasLarga cs = aux (lsDePalabras (rmLeftAndRightSpace cs))
     rmRepeatSpace (c : d : cs)
         | c == d && d == ' ' = rmRepeatSpace (d : cs)
         | otherwise = c : rmRepeatSpace (d : cs)
+
+-- -- Ejercicio 4 - (a.e)
+aplanar :: [[Char]] -> [Char]
+aplanar [] = []
+aplanar ((c : []) : ds) = c : aplanar ds
+aplanar ((c : cs) : ds) = c : aplanar (cs : ds)
+
+-- -- Ejercicio 4 - (a.f)
+aplanarConBlancos :: [[Char]] -> [Char]
+aplanarConBlancos ((c : []) : []) = [c]
+aplanarConBlancos ((c : []) : ds) = c : ' ' : aplanarConBlancos ds
+aplanarConBlancos ((c : cs) : ds) = c : aplanarConBlancos (cs : ds)
+
+--  _____ ___  ____   ___
+
+{- | _   _/ _ \|  _ \ / _ \
+   | || | | | | | | | | |
+   | || |_| | |_| | |_| |
+   |_| \___/|____/ \___/
+
+ -- -- Ejercicio 4 - (a.g)
+ aplanarConNEspacios :: [[Char]] -> Integer -> [Char]
+ aplanarConNEspacios [] _ = []
+ aplanarConNEspacios ((c : []) : ds) n = c : nEspacios n : aplanarConNEspacios ds n
+ aplanarConNEspacios ((c : cs) : ds) n = c : aplanarConNEspacios (cs : ds) n
+   where
+     nEspacios :: Integer -> [Char]
+     nEspacios 0 = []
+     nEspacios n = ' ' : nEspacios (n - 1)
+
+     concatenarListas :: [Char] -> [Char] -> [Char]
+     concatenarListas [] ds = ds
+     concatenarListas cs [] = cs
+     concatenarListas (c:cs) ds = c : concatenarListas cs ds
+
+ Ejercicio 4 - (b)
+-}
+type Texto = [Char]
+
+-- El ejercicio no cambia? Se redefine el nombre del tipo nada más. La verdad que debería consultar esto.
+-- -- Ejercicio 4 - (a.e)
+aplanarT :: [[Char]] -> [Char]
+aplanarT [] = []
+aplanarT ((c : []) : ds) = c : aplanar ds
+aplanarT ((c : cs) : ds) = c : aplanar (cs : ds)
+
+-- =================
+{- Ejercicio 5 -}
+-- =================
+-- Ejercicio 5 - (1)
+sumaAcumulada :: (Num t) => [t] -> [t]
+sumaAcumulada [] = []
+sumaAcumulada [x] = [x]
+sumaAcumulada (x : xs) = x : restOfTerms (x : xs)
+  where
+    restOfTerms :: (Num t) => [t] -> [t]
+    restOfTerms (x : y : []) = [x + y]
+    restOfTerms (x : y : ys) = (x + y) : restOfTerms (x + y : ys)
+
+--  _____ ___  ____   ___
+
+{- | _   _/ _ \|  _ \ / _ \
+   | || | | | | | | | | |
+   | || |_| | |_| | |_| |
+   |_| \___/|____/ \___/
+
+ -- Ejercicio 5 - (2)
+ descomponerEnPrimos :: [Integer] -> [[Integer]]
+-}
+
+-- primosDeN :: Integer -> [Integer]
+-- primosDeN
+---- ===================
+-- -- TODO 04/05/2024: Hacerlo en algún momento cuando aprenda descomposición en primos
+---- ===================
 
 {-
   _____         _
