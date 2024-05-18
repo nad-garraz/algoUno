@@ -28,7 +28,7 @@ lockers3 :: MapaDeLockers
 lockers3 =
     [ (100, (Ocupado, "ZD39I"))
     , (101, (Libre, "JAH3I"))
-    , (103, (Ocupado, "IQSA9"))
+    , (103, (Libre, "IQSA9"))
     , (105, (Libre, "QOTSA"))
     , (109, (Ocupado, "893JJ"))
     , (110, (Ocupado, "99292"))
