@@ -59,40 +59,46 @@ def es_multiplo_de(n: int, m: int) -> bool:
     return n % m == 0
 
 
-def raiz_cuadrada_de(numero: int) -> float:
-    return sqrt(numero)
+# ej 2.7
+def es_par(numero: int) -> bool:
+    return es_multiplo_de(numero)
 
 
-def es_par(z: int) -> bool:
-    return z % 2 == 0
+# ej 2.8
+def cantidad_de_pizzas(comensales: int, min_cant_de_porciones: int) -> int:
+    porciones_por_pizza: int = 8
+    sobras: int = 2
+    minimo_de_porciones: int = min_cant_de_porciones * comensales + sobras
+    pizzas_fraccionarias: float = minimo_de_porciones / porciones_por_pizza
+    cantidad_de_pizzas: int = ceil(pizzas_fraccionarias)
+    return cantidad_de_pizzas
 
 
+# Ejercicio 3
+# ej 3.1
+def alguno_es_0(numero1: float, numero2: float) -> bool:
+    return numero1 == 0 or numero2 == 0
+
+
+# ej 3.2
+def alguno_es_0(numero1: float, numero2: float) -> bool:
+    return numero1 == 0 and numero2 == 0
+
+
+# ej 3.3
 def es_nombre_largo(nombre: str) -> bool:
     longitud: int = len(nombre)
     condicion: bool = longitud >= 3 and longitud <= 8
     resultado: bool = False
-    if condicion == True:
-        resultado = True
-    return resultado
+    return condicion or resultado
 
 
-def imprimir_pares_10_40() -> None:
-    numero: int = 10
-    while numero <= 40:
-        # numero % 2 == 0 and print(numero)
-        # numero = numero + 1
-        print(numero)
-        numero = numero + 2
-
-
-def cuenta_regresiva(numero: int) -> None:
-    for numero in range(numero, 0, -1):
-        print(numero)
-    print("Despegue")
-
-    # while (numero > 0):
-    #     print(numero)
-    #     numero = numero - 1
+# ej 3.4
+def es_bisisesto(anio: int) -> bool:
+    multiplo_de_400: bool = anio % 400 == 0
+    multiplo_de_4: bool = anio % 4 == 0
+    no_multiplo_de_100: bool = anio % 100 != 0
+    return multiplo_de_400 or (multiplo_de_4 and no_multiplo_de_100)
 
 
 # Ejercicio 4
@@ -108,26 +114,86 @@ def peso_sobre_3_metros(altura) -> int:
 def peso_pino(altura: int) -> int:
     return peso_bajo_3_metros(altura) + peso_sobre_3_metros(altura)
 
+
 # ej 4.2
 def es_peso_util(peso: int) -> bool:
     return peso >= 400 and peso <= 1000
+
 
 # ej 4.3
 # Ejercicio feo mal redactado.
 def sirve_pino(altura: int) -> bool:
     return peso_pino(altura) >= 400 and peso_pino(altura) <= 1000
+
+
 # ej 4.4
-# ... 
+# ...
 # ===================
 # TODO 20/05/2024: Preguntar qué es eso de la composición de funciones.
 # ===================
 
+# Ejercicio 5
+# ===================
+# TODO 20/05/2024: No entiendo un carajo el enunciado.
+# ===================
+# Se puede usar if then else o no?
 
 
-# imprimir_un_verso()
-# print(raizDe2())
-# print(perimetro())
-# print(es_par(5))
-# print(es_nombre_largo("Bob Patiño"))
-# imprimir_pares_10_40()
-# cuenta_regresiva(5)
+# Ejercicio 6
+# ej 6.1
+def imprimir_del_1_al_10() -> None:
+    numero: int = 10
+    while numero > 0:
+        print(numero)
+        numero -= 1
+
+
+# ej 6.2
+def imprimir_pares_entre_10_y_40() -> None:
+    numero: int = 10
+    while numero < 42:
+        print(numero)
+        numero += 2
+
+
+# ej 6.3
+def imprimir_eco_10_veces() -> None:
+    numero: int = 0
+    while numero < 10:
+        print(f"{numero+1} - eco")
+        numero += 1
+
+
+# ej 6.4
+def cuenta_regresiva(numero: int) -> None:
+    while numero > 0:
+        print(numero)
+        numero = numero - 1
+
+
+# ej 6.5
+# ===================
+# TODO 20/05/2024:
+# ===================
+
+# ej 6.6
+# ===================
+# TODO 20/05/2024:
+# ===================
+
+
+# Ejercicio 7
+# ej 7.4
+def cuenta_regresiva(numero: int) -> None:
+    for numero in range(numero, 0, -1):
+        print(numero)
+    print("Despegue")
+
+
+# Ejercicio 8
+# ¿Qué sería la ejecución simbólica?
+
+# Ejercicio 9
+# ===================
+# TODO 20/05/2024: consultar
+# ===================
