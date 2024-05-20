@@ -96,23 +96,32 @@ def cuenta_regresiva(numero: int) -> None:
 
 
 # Ejercicio 4
-# ej 4.11
+# ej 4.1
+def peso_bajo_3_metros(altura) -> int:
+    return min(900, altura * 100 * 3)
 
 
-def peso_bajo_3_metros() -> int:
-    return 1 * 100 * 3  # 2kg x metro
-
-
-def peso_sobre_3_metros() -> int:
-    return min(3 , altura) ==1 * 100 * 2  # 2kg x metro
+def peso_sobre_3_metros(altura) -> int:
+    return max(0, (altura - 3) * 100 * 2)
 
 
 def peso_pino(altura: int) -> int:
-    # print(altura)
-    return ( 
-            (altura >= 3 and 200 + peso_pino(altura - 1))
-            (altura >= 0 and altura <= 3 and 300 + peso_pino(altura - 1))
-        )
+    return peso_bajo_3_metros(altura) + peso_sobre_3_metros(altura)
+
+# ej 4.2
+def es_peso_util(peso: int) -> bool:
+    return peso >= 400 and peso <= 1000
+
+# ej 4.3
+# Ejercicio feo mal redactado.
+def sirve_pino(altura: int) -> bool:
+    return peso_pino(altura) >= 400 and peso_pino(altura) <= 1000
+# ej 4.4
+# ... 
+# ===================
+# TODO 20/05/2024: Preguntar qué es eso de la composición de funciones.
+# ===================
+
 
 
 # imprimir_un_verso()
