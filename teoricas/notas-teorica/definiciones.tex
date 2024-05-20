@@ -1,0 +1,61 @@
+
+%%% Definiciones y nuevos comandos:
+%%% =============
+%%% Definiciones matemáticas:
+%%% -------------------------
+%tipos
+\def\reales{\mathbb R}
+\def\enteros{\mathbb Z}
+\newcommand{\ordC}[1]{\mathtt{ord\left( '#1' \right)}}
+\newcommand{\ordE}[1]{\mathtt{ord\left( #1 \right)}}
+
+%%% Conjuntos entre llaves, angles y eso
+\newcommand{\set}[1] {\left\{ #1 \right\} }
+\newcommand{\ang}[1] {\langle #1 \rangle}
+
+%%
+%%% =====
+%%% Miscelanea
+%%% =====
+% separador
+\def\separador{\noindent\rule{\linewidth}{0.4pt}\\}
+\newcommand{\llave}[2]{ \left\{ \begin{array}{#1} #2 \end{array}\right. }
+
+\def\tipo{\texttt{T}}
+
+% problemas
+\def\requiere{\texttt{requiere}}
+\def\asegura{\texttt{asegura}}
+\def\res{\text{\texttt{res}}}
+\newcommand{\seq}[1]{\texttt{seq} \langle #1 \rangle}
+\newcommand{\secuencia}[1]{\langle#1\rangle}
+
+%%
+%%% Colores
+\newcommand{\red}[1]{ {\color{red} \text{#1}}}
+\newcommand{\green}[1]{ {\color{olive} \text{#1}}}
+\newcommand{\blue}[1]{ {\color{blue} \text{#1}}}
+\newcommand{\cyan}[1]{ {\color{cyan} \text{#1}}}
+\newcommand{\magenta}[1]{ {\color{magenta} \text{#1}}}
+
+%funciones
+\def\lengthF{\texttt{length}}
+\def\perteneceF{\texttt{pertenece}}
+\def\seqF{\texttt{seq}}
+\def\headF{\texttt{head}}
+\def\tailF{\texttt{tail}}
+\def\addFirstF{\texttt{addFirst}}
+\def\concatF{\texttt{concat}}
+\def\subseqF{\texttt{subseq}}
+\def\setAtF{\texttt{setAt}}
+
+
+%%
+%%% Flecha con texto
+%%\NewDocumentCommand{\flecha}{m o}{%
+%%	\IfNoValueTF{#2}{%
+%%		\xrightarrow[]{\text{#1}}
+%%	}{
+%%		\xrightarrow[\text{#2}]{\text{#1}}
+%%	}
+%%}
