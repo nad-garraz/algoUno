@@ -1,5 +1,6 @@
 from math import pi
 from math import sqrt
+from math import ceil
 
 
 # Ejercicio 1
@@ -134,7 +135,7 @@ def sirve_pino(altura: int) -> bool:
 
 # Ejercicio 5
 # ===================
-# TODO 20/05/2024: No entiendo un carajo el enunciado.
+# TODO 20/05/2024: No entiendo nada el enunciado.
 # ===================
 # Se puede usar if then else o no?
 
