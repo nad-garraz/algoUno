@@ -1,0 +1,27 @@
+cabal-version:      3.0
+name:               5guia
+version:            0.1.0.0
+-- synopsis:
+-- description:
+license:            Apache-2.0
+license-file:       LICENSE
+author:             nad-garraz
+maintainer:         22796744+nad-garraz@users.noreply.github.com
+-- copyright:
+build-type:         Simple
+extra-doc-files:    CHANGELOG.md
+-- extra-source-files:
+
+common warnings
+    ghc-options: -Wall
+
+executable 5_guia
+    import:           warnings
+    main-is:          Main.hs
+    -- other-modules:
+    -- other-extensions:
+    build-depends:
+      base ^>=4.16.4.0,
+      HUnit
+    hs-source-dirs:   app
+    default-language: GHC2021
