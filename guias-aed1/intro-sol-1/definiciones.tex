@@ -1,0 +1,79 @@
+% Definiciones y nuevos comandos:
+% =============
+
+% Conjuntos
+\def\reales{\mathbb R}
+\def\naturales{\mathbb N}
+\def\enteros{\mathbb Z}
+\def\complejos{\mathbb C}
+\def\i{\text{i}} % i^2 =  -1
+\def\equivale{\equiv}
+
+\def\vacio{\varnothing}
+\def\union{\cup}
+\def\inter{\cap}
+\def\existe{\exists\,}
+\def\noexiste{\nexists\,}
+\def\paratodo{\forall}
+\def\talque{\;|\;}
+\newcommand{\set}[1] { \left\{ #1 \right\} } % Conjuntos entre llaves
+
+% lógica proposicional
+\def\neg{\sim}
+\def\y{\land}
+\def\o{\lor}
+\def\entonces{\rightarrow}
+\def\sisolosi{\leftrightarrow}
+
+% lógica trivaluada 
+\def\indef{\perp}
+\def\no{\,\lnot\,}
+\def\lo{\lor_{\text{L}}}
+\def\ly{\,\land_{\text{L}}\,}
+\def\lentonces{\rightarrow_{\text{L}}}
+
+% =====
+% Miscelanea
+% =====
+\newcommand{\estabien}{{\color{blue} Consultado, está bien. \checkmark}}
+\newcommand{\hacer}{{\color{black!30!red}Hacer!}}
+
+% separador
+\def\separador{\noindent\rule{\linewidth}{0.4pt}\\}
+\def\separadorCorto{\noindent\rule{0.5\linewidth}{0.4pt}\\}
+
+
+% Llaves, paréntesis, contenedores
+\newcommand{\llave}[2]{ \left\{ \begin{array}{#1} #2 \end{array}\right. }
+\newcommand{\llaves}[2]{ \left\{ \begin{array}{#1} #2 \end{array} \right\} }
+\newcommand{\matriz}[2]{\left( \begin{array}{#1} #2 \end{array} \right)}
+
+
+% Colores
+\newcommand{\red}[1]{ {\color{red} \text{#1}}}
+\newcommand{\green}[1]{ {\color{olive} \text{#1}}}
+\newcommand{\blue}[1]{ {\color{blue} \text{#1}}}
+\newcommand{\magenta}[1]{ {\color{magenta} \text{#1}}}
+
+% Stackrel text
+\newcommand{\stacktext}[2]{ \stackrel{\text{#1}}{#2} }
+
+% Flecha con texto
+\NewDocumentCommand{\flecha}{m o}{
+	\IfNoValueTF{#2}{
+		\xrightarrow[]{\text{#1}}
+	}{
+		\xrightarrow[\text{#2}]{\text{#1}}
+	}
+}
+
+% sección ejercicio con su respectivo formato y contador
+\newcounter{ejercicio}[part]
+\renewcommand{\theejercicio}{\arabic{ejercicio}}
+\newcommand{\ejercicio}{%
+	\stepcounter{ejercicio}%
+	\titleformat{\subsubsection}[runin]{\normalfont\bfseries}{Ejercicio \theejercicio}{-1em}{}%
+  \subsubsection*{Ejercicio \theejercicio.}%
+}
+	\let\oldsection\part
+	\renewcommand{\part}{\stepcounter{ejercicio}\part}

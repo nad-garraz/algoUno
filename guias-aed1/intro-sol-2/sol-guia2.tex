@@ -1,0 +1,381 @@
+\documentclass[12pt,a4paper,spanish]{article}
+% Sacar draft para que aparezcan las imagenes.
+% Opciones: 10pt, 11pt, landscape, twocolumn, fleqn, leqno...
+% Opciones de clase: article, report, letter, beamer...
+
+% Paquetes:
+% =========
+\usepackage[headheight=110pt, top = 1.5cm, bottom = 1.5cm, left=1.5cm, right=1.5cm]{geometry} %modifico márgenes
+\usepackage[T1]{fontenc} % Para tildes en espñol
+\usepackage[utf8]{inputenc} % Para poder escribir con tildes en el editor.
+\usepackage[english]{babel} % Para que el latex sepa cortar bien las lineas.
+\usepackage[ddmmyyyy]{datetime}
+\usepackage{amsmath} % Soporte de mathmatics
+\usepackage{amssymb} % fuentes de mathmatics
+\usepackage{array} % Para tablas y eso
+% \usepackage{caption} % Configuracion de figuras y tablas
+\usepackage{xcolor} % Para colorear el texto: black, blue, brown, cyan, darkgray, gray, green, lightgray, lime, magenta, olive, orange, pink, purple, red, teal, violet, white, yellow.
+\usepackage{graphicx} % Necesario para poner imagenes
+\usepackage{enumitem} % Cambiar labels y más flexibilidad para el enumerate
+\usepackage{multicol} 
+\usepackage{tikz} % para graficar
+% \usepackage{fourier} % entre otras cosas me da el \warning symbol
+\usepackage{listings} % para codigo
+
+\include{definiciones.tex} % idem con las definiciones
+
+\usepackage{titlesec} % para editar titulos y hacer secciones con formato a medida
+
+\begin{document}
+
+\pagestyle{empty} % enumeración de páginas
+
+% Datos de importancia
+\title{Práctica 2 de Intro a la programación}
+\author{Nad Garraz}
+\date{Actualizado: \today} % Cambiar de ser necesario
+\maketitle
+\thispagestyle{empty}
+
+
+\section{Formato de especificaciones semiformales:}
+
+Nota: Contrato $\entonces$ especificaciones. Contrato entre 2 partes.
+\begin{itemize}
+	\item Contrato: el programador escribe un programa P tal que si el usuario suministra datos que hacen verdadera
+	      la precondición, entonnces P termian en una cantidad finita de pasos retornando un valor que hace verdadera la postcondición.
+	\item El programa P es \red{correcto} para la especificación dada por la precondición y la postcondición exactamente cuando se cumple el contrato.
+	\item Si el usuario no cumple la precondición y P se cuelga o no cumple la postcondición...
+	      \begin{itemize}
+		      \item ¿El usuario tiene derecho a quejarse? \red{Creería que no.}
+		      \item ¿Se cumple el contrato? \red{No, se debe cumplir precondición para que se cumpla el contrato.}
+	      \end{itemize}
+	\item Si el usuario cumple la precondición y P se cuelga o no cumple la postcondición...
+	      \begin{itemize}
+		      \item ¿El usuario tiene derecho a quejarse? \red{Diría que sí.}
+		      \item ¿Se cumple el contrato? \red{No, porque debería terminar el programa cumpliendo la postcondición.}
+	      \end{itemize}
+\end{itemize}
+
+\separador
+%1
+\ejercicio
+
+\begin{enumerate}[label=\alph*)]
+	%a
+	\item
+	      \[
+		      \begin{array}{|c|c|}
+			      \hline
+			      \texttt{entrada }x & \texttt{salida }res \\  \hline
+			      0                  & 2                   \\
+			      2                  & 4                   \\
+			      -2                 & -4                  \\\hline
+		      \end{array}
+	      \]
+
+	      %b
+	\item
+	      \requiere: \{$x$ es positivo\}\\
+	      \asegura: \{$resultado$ es la raíz cuadrada de $x$\}
+	      \[
+		      \begin{array}{|c|c|}
+			      \hline
+			      \texttt{entrada }x & \texttt{salida }res \\  \hline
+			      1                  & 1                   \\
+			      \red{$4$}          & \red{$-2$}          \\
+			      25                 & 5                   \\\hline
+		      \end{array}
+	      \]
+	      \red{Consultar por el tema de la definición de raíz cuadrada en este ejercicio}\\
+	      \blue{es justamente la definicion que está en el inciso (b.). Es medio circular el asunto.}\\
+	      \blue{Supongo que está bien definida de ahora en más. Y que no vale que la $res < 0$}
+
+
+	      %c
+	\item
+	      \def\salidaLarga{
+		      \begin{array}{c}
+			      \red{2} \\
+			      \red{1}
+		      \end{array}
+	      }
+	      \[
+		      \begin{array}{|c|c|}
+			      \hline
+			      \texttt{entrada }x & \texttt{salida }res \\ \hline
+			      -1                 & 1                   \\
+			      1.4                & 1                   \\
+			      1.6                & 2                   \\ \hline
+			      \red{1.5}          & \salidaLarga        \\ \hline
+		      \end{array}
+	      \]
+	      \red{Consultar por el tema del redondeo. Al estar igual distancia el 1 y 2, se cumple la poscondición?}\\
+	      \red{Puedo tener ese tipo de ambigüedad?}\\
+	      \blue{Al parecer ya sea $1$ o $2$, funcionaría como respueta. Dado que cumplen el asegura.}
+
+	      %d
+	\item
+	      \[
+		      \begin{array}{|c|c|}
+			      \hline
+			      \texttt{entrada } s & \texttt{salida } res       \\  \hline
+			      \secuencia{2, 4, 9} & \secuencia{\sqrt{2}, 2, 3} \\
+			      \secuencia{25}      & \secuencia{5}              \\\hline
+		      \end{array}
+	      \]
+
+	      %e
+	\item
+	      \def\salidaLarga{
+		      \begin{array}{c}
+			      \secuencia{2, \sqrt{2}, 3} \\
+			      \secuencia{2, 3, \sqrt{2}} \\
+			      \secuencia{3, 2, \sqrt{2}} \\
+			      \secuencia{3, \sqrt{2}, 2} \\
+			      \secuencia{\sqrt{2}, 2, 3} \\
+			      \secuencia{\sqrt{2},3, 2}  \\
+		      \end{array}
+	      }
+	      \[
+		      \begin{array}{|c|c|}
+			      \hline
+			      \texttt{entrada } s & \texttt{salida } res \\  \hline
+			      \secuencia{2, 4, 9} & \salidaLarga         \\ \hline
+			      \secuencia{25}      & \secuencia{5}        \\ \hline
+		      \end{array}
+	      \]
+
+	      %f
+	\item
+	      \def\salidaLarga{
+		      \begin{array}{c}
+			      \secuencia{2, 2, 2}                      \\
+			      \secuencia{\sqrt{2}, \sqrt{2}, \sqrt{2}} \\
+			      \secuencia{3, 3, 3}                      \\
+			      \secuencia{2,9, 2}                       \\
+			      \secuencia{3, 2, 4}                      \\
+			      \secuencia{\sqrt{2}, 2, 9}               \\
+			      \secuencia{\sqrt{2},9, 4}                \\
+		      \end{array}
+	      }
+	      \[
+		      \begin{array}{|c|c|}
+			      \hline
+			      \texttt{entrada } s & \texttt{salida } res \\  \hline
+			      \secuencia{2, 4, 9} & \salidaLarga         \\ \hline
+			      \secuencia{25}      & \secuencia{5}        \\ \hline
+		      \end{array}
+	      \]
+
+	      %g
+	\item
+
+	      \def\salidaLarga{
+		      \begin{array}{c}
+			      \secuencia{2, 3}       \\
+			      \secuencia{3, 2}       \\
+			      \secuencia{2, 3, 2, 3} \\
+		      \end{array}
+	      }
+	      \[
+		      \begin{array}{|c|c|}
+			      \hline
+			      \texttt{entrada } s  & \texttt{salida } res \\  \hline
+			      \secuencia{-2, 4, 9} & \salidaLarga         \\ \hline
+			      \secuencia{25}       & \secuencia{5}        \\ \hline
+		      \end{array}
+	      \]
+
+	      %h
+	\item
+
+	      \def\salidaLarga{
+		      \begin{array}{c}
+			      \secuencia{\sqrt{2}, 2, 3}            \\
+			      \secuencia{\sqrt{2}, 2, 3, e^{i2\pi}} \\
+		      \end{array}
+	      }
+	      \[
+		      \begin{array}{|c|c|}
+			      \hline
+			      \texttt{entrada } s & \texttt{salida } res \\  \hline
+			      \secuencia{2, 4, 9} & \salidaLarga         \\ \hline
+			      \secuencia{25}      & \secuencia{5}        \\ \hline
+		      \end{array}
+	      \]
+
+	      %i
+	\item
+
+	      \def\salidaLarga{
+		      \begin{array}{c}
+			      \secuencia{\sqrt{2}, 2, 3} \\
+		      \end{array}
+	      }
+	      \[
+		      \begin{array}{|c|c|}
+			      \hline
+			      \texttt{entrada } s    & \texttt{salida } res \\  \hline
+			      \secuencia{2, 4, 9}    & \salidaLarga         \\ \hline
+			      \secuencia{25}         & \secuencia{5}        \\ \hline
+			      \secuencia{\sqrt{3},4} & \secuencia{100, 2}   \\ \hline
+		      \end{array}
+	      \]
+\end{enumerate}
+
+%2
+\ejercicio
+
+\begin{enumerate}[label=\arabic*.]
+	\item
+	      En los problemas raicesCuadradas que utilizan el problema raizCuadrada, ¿Se puede eliminar el requiere:
+	      \textit{"Todos los elementos de s son positivos"}? Justificar.  \\
+	      \separadorCorto
+	      No. Porque necesitás $devolver$ un número $\reales$.
+
+	\item
+	      ¿Qué consecuencia tiene la diferencia de $asegura$ en el resultado entre los problemas\\
+	      \texttt{raicesCuadradasUno} y\texttt{raicesCuadradasDos}?  \\
+	      \separadorCorto
+	      Se ve en la respuesta dada al ejercicio. Se puede cambiar la posición de los resultados en la $\seq{\reales}$
+
+	\item
+	      En base a la respuesta del ítem anterior, ¿Un algoritmo que satisface la especificación de \texttt{raicesCuadradasUno}, también
+	      satisface la especificación de \texttt{raicesCuadradasDos}? ¿Y al revés? \\
+	      \separadorCorto
+	      Sí, el conjunto solución de \texttt{raicesCuadradasUno}, es más pequeño, está contenido en la solución de \texttt{raicesCuadradasDos},
+	      es decir:\\
+	      Las condiciones de los asegura del \texttt{res(raicesCuadradasUno)} son \textbf{más fuertes} que las de \texttt{res(raicesCuadradasDos)}.
+	      \begin{align*}
+		      \set{\seq{ \texttt{res(raicesCuadradasUno)}}} & \subseteq \set{\seq{\texttt{res(raicesCuadradasDos)}}} \\
+		      \texttt{res(raicesCuadradasUno)}              & \entonces \texttt{res(raicesCuadradasDos)}             \\
+		      \textbf{fuerte}                               & \entonces \textbf{débil}
+	      \end{align*}
+
+	      Las condiciones fuertes dan en general un conjunto de soluciones más chico. Las condiciones débiles son más relajadas, por lo que permiten
+	      que se meta mucha basura no deseada en el conjunto solución.
+
+	\item
+	      Explicar en palabras las diferencias entre los problemas \texttt{raicesCuadradasCinco} y \\ \texttt{raicesCuadradasSeis}.
+	      ¿Cómo influye el asegura de longitud máxima? ¿Es $\secuencia{ \sqrt{3}, \sqrt{9}}$ una salida válida para ambos problemas,
+	      dado $s = \secuencia{ 3, 9, 11, 15, 18}$ ? ¿Es $\secuencia{ \sqrt{3}, \sqrt{9},\sqrt{11},\sqrt{13}}$ una salida válida para el problema
+	      \texttt{raicesCuadradasCinco} dado $s = \secuencia{ 3, 9, 11 }$ ambos problemas,\\
+	      \separadorCorto
+	      Los \asegura son más fuertes en \texttt{raicesCuadradasSeis}, al evitar poner elementos que nada tengan que ver con $s$ limitando la longitud
+	      de $res$. \asegura fuerte $\entonces$ \asegura débil, por lo que la solución:
+	      $\secuencia{\sqrt{3}, \sqrt{9}}$ es solución de ambos, sin embargo $\secuencia{\sqrt{3}, \sqrt{9},\sqrt{11},\sqrt{13}}$ no es solución
+	      del \texttt{problema} con los \asegura fuertes, porque no cumple que sea solución de $s = \secuencia{ 3, 9, 11 }$ violando el \asegura
+	      sobre la longitud $res \leq s$
+
+	\item ¿Cómo me cambia en el \texttt{problema raicesCuadradasCuatro} agregar un \asegura que diga que $res$ tiene misma longitud que $s$? \\
+	      \separadorCorto
+	      Eso me  obligaría a tener la respueta de \texttt{problema raicesCuadradasDos}. Si bien no puedo agregar basura, puedo intercambiar los índices
+	      de $res$
+
+	\item ¿Si los problemas \texttt{raicesCuadradasDos} y \texttt{raicesCuadradasTres} tienen el mismo $res$ para la misma entrada (una secuencia
+	      específica de números), quiere decir que son el mismo problema?\\
+	      \separadorCorto
+	      No, el \asegura del \texttt{raicesCuadradasDos} es más fuerte que el del \texttt{raicesCuadradasTres}.
+
+	\item ¿Qué ocurre si eliminamos los \requiere "no hay repetidos"?¿Es $\secuencia{ 2, 2, 1 }$ una salida válida
+	      para el problema raicesCuadradasDos dado $s = \secuencia{4, 1, 1}$?\\
+
+	      \separadorCorto
+
+	      El \texttt{problema} quedaría así:\\
+	      \requiere: \{Todos los elementos de $s$ son positivos\}\\
+	      \asegura: \{$res$ tiene la misma cantidad de elementos que $s$.\}\\
+	      \asegura: \{Los elementos de $res$ son la salida de aplicar el problema \texttt{raizCuadrada()} a todos los elementos de la secuensia $s$\}\\
+
+	      Sí, es una respuesta válida, dado que $\secuencia{2, 2, 1}$ tiene igual longitud que $\secuencia{4,1,1}$ y los valores son las raíces cuadradas
+	      de los elementos de $s$.\\
+	      \red{¿Elementos de $s$ con igual valor pero en índices distintos, son el mismo elemento?}\\
+	      \red{¿Es como en álgebra? $\boxed{\secuencia{1,1,2} \stackrel{?}= \secuencia{1,2,2}}$ }
+
+\end{enumerate}
+
+%3
+\ejercicio
+
+Responder las preguntas dada la siguiente especificación para el problema de ordenar una secuencia de enteros (es decir, dada una secuencia de enteros,
+devolver los mismos elementos ordenados de menor a mayor):\\
+
+\begin{verbatim}
+problema ordenar (s: seq<Z>): seq<Z> {
+  requiere: {True}
+  asegura: {resultado es una secuencia de la cual cada elemento es
+            estrictamente mayor que el anterior}
+} 
+\end{verbatim}
+
+\begin{enumerate}[label=\alph*)]
+	\item  Dado $s = \secuencia{4,3,5}$ como secuencia de entrada ¿Es válida $res = \secuencia{3,4,5}$. $\to$ sí.
+	\item \hacer
+	\item \hacer
+	\item \hacer
+	\item \hacer
+	\item \hacer
+\end{enumerate}
+
+%4
+\ejercicio
+
+Se desea especificar el problema de duplicar todos los valores de la secuencia y se cuenta con la siguiente especificación:
+
+\begin{verbatim}
+problema duplicarTodos (s: seq<Z>): seq<Z> {
+  requiere: {True}
+  asegura: {resultado tiene la misma cantidad de elmentos que s}
+} 
+\end{verbatim}
+
+\begin{enumerate}[label=\alph*)]
+	\item  ¿Qué problemas tiene la especificaión dada? Dar ejemplos de valores para $resultado$ que satisfagan la especificación pero no sean respuestas correctas.\\
+	      \hacer
+	\item  Indicar cuál/es de los siguientes \asegura debería/n ser agregado/s a la especificación. Justificar en cada caso por qué deberían o no ser agregados.
+	      \begin{itemize}
+		      \item \asegura: \{Para cada valor $x$ que pertenece a $s$, hay algún valor en $resultado$ que es la salida de duplicar($x$).\}
+		      \item \asegura: \{En cada posición de $resultado$, el valor es mayor al valor en esa misma posición de $s$.\}
+		      \item \asegura: \{En cada posición de $resultado$, el valor es igual a la salida de aplicar \texttt{duplicar()} al valor en esa misma posición de $s$.\}
+		      \item \asegura: \{Todos los elementos de $resultado$ son números pares.\}
+	      \end{itemize}
+	      \hacer
+	\item
+\end{enumerate}
+
+
+
+a es válida
+b  no cumple el $<$ ... se corrige con $\leq$ o achicar los requiere, por ejemplo, no tener elementos repetidos.
+
+f) problema ordenar (s: seq($\enteros$): seq($\enteros$))
+
+requiere: {True}
+asegura: {resultado es una secuencia con todos los mismos elementos que
+$s$}
+asegura: {\#(A,s) = \#(A.resultado)}
+asegura: {resultado tiene igual long que s }
+asegura: {ordenados de menor a mayor}
+
+
+5)
+problema cantidadColectivosLinea(linea: $\enteros$, colectivos: $\seq{\enteros}$, colectivosHoy: $\seq{\enteros}$ : $\enteros$){
+requiere: {linea $\in$ colectivos}
+asegura: {respuesta \#(linea, colectivos)}
+
+}
+
+
+1d
+1e
+2.2
+2.3
+1h
+1i
+2.4
+2.7
+3 a,b,c,d,e,f
+5 a
+
+\end{document}

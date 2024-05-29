@@ -1,0 +1,38 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.4.7)  8 APR 2024 01:03
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**definiciones.tex
+(./definiciones.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-02-20>
+\c@ejercicio=\count188
+
+! LaTeX Error: No counter 'part' defined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.71 \newcounter{ejercicio}[part]
+                                 
+? 
+! Emergency stop.
+ ...                                              
+                                                  
+l.71 \newcounter{ejercicio}[part]
+                                 
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+ 
+Here is how much of TeX's memory you used:
+ 62 strings out of 475508
+ 868 string characters out of 5782137
+ 1925187 words of memory out of 5000000
+ 22425 multiletter control sequences out of 15000+600000
+ 558069 words of font info for 36 fonts, out of 8000000 for 9000
+ 290 hyphenation exceptions out of 8191
+ 14i,0n,26p,102b,14s stack positions out of 10000i,1000n,20000p,200000b,200000s
+!  ==> Fatal error occurred, no output PDF file produced!

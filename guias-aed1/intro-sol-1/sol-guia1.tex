@@ -1,0 +1,314 @@
+\documentclass[12pt,a4paper,spanish]{article}
+% Sacar draft para que aparezcan las imagenes.
+% Opciones: 10pt, 11pt, landscape, twocolumn, fleqn, leqno...
+% Opciones de clase: article, report, letter, beamer...
+
+% Paquetes:
+% =========
+
+\usepackage[headheight=110pt, top = 2cm, bottom = 2cm, left=2cm, right=1cm]{geometry} %modifico márgenes
+\usepackage[T1]{fontenc} % Para tildes en espñol
+\usepackage[utf8]{inputenc} % Para poder escribir con tildes en el editor.
+\usepackage[spanish]{babel} % Para cortar las palabras en silabas, creo.
+\usepackage[ddmmyyyy]{datetime}
+\usepackage{amsmath} % Soporte de mathmatics
+\usepackage{amssymb} % fuentes de mathmatics y símbolos
+\usepackage{array} % Para tablas y eso
+\usepackage{caption} % Configuracion de figuras y tablas
+\usepackage{xcolor} % Para colorear el texto: black, blue, brown, cyan, darkgray, gray, green, lightgray, lime, magenta, olive, orange, pink, purple, red, teal, violet, white, yellow.
+\usepackage{graphicx} % Necesario para poner imagenes
+\usepackage{enumitem} % Cambiar labels y más flexibilidad para el enumerate
+\usepackage{multicol} 
+\usepackage{tikz} % para graficar
+\usepackage{titlesec} % para poder modificar los titulos y secciones
+
+\usepackage{bbding} % símbolos de donde uso
+%FiveStar,
+
+\include{definiciones.tex} % idem con las definiciones
+
+\begin{document}
+\pagestyle{empty}
+% Datos de importancia
+\title{Práctica 1 de Intro}
+\author{D. Garraz}
+\date{Actualizado: \today} % Cambiar de ser necesario
+\maketitle
+
+\section{Lógica Binaria (Verdadero o Falso)}
+
+\fbox{
+\parbox{\textwidth}{
+  \textbf{Fórmulas según teórica}:
+  \begin{enumerate}
+    \item True y False son fórmulas.
+    \item Cualqueir variable proposicional es una fórmula.
+    \item Si $A$ es una fórmula, $\no A$ es una fórmula.
+    \item Si $A_1, A_2, \dots, A_n$ son fórmulas, ($A_1 \y A_2 \y \cdots \y A_n)$ es una fórmula.
+    \item Si $A_1, A_2, \dots, A_n$ son fórmulas, ($A_1 \o A_2 \o \cdots \o A_n)$ es una fórmula.
+    \item Si $A$ y $B$ son fórmulas, $(A \entonces B)$ es una fórmula.
+    \item Si $A$ y $B$ son fórmulas, $(A \sisolosi B)$ es una fórmula.
+  \end{enumerate}
+}
+}
+
+
+\ejercicio \FiveStar\ Sean $p$ y $q$ variables proposicionales. Siguiendo las reglas de formación de fórmulas, ¿Cuánles de las siguientes expresiones son \textit{fórmulas bien formadas}?
+
+\begin{enumerate}[label=\alph*)]
+	\item $(p \no q)$\\
+	      No es fórmula, si bien $p$ y $\no q$ son fórmulas. Esa forma de juntarlas no obedece a ninguna de las siete reglas.
+
+	\item  $p \o q \o True$\\
+	      No es fórmula, faltan paréntesis para saber como evaluar.
+
+	\item $(p \entonces \no p \entonces q)$\\
+	      No es fórmula,. Si bien se parece a una extensión de la regla 6, faltarían los paréntesis, ejemplo: $( (p \entonces \no p) \entonces q)$ o $( p \entonces (\no p \entonces q))$
+
+	\item $\no (p)$\\
+	      Dudoso. Diría que \textbf{no} es una fórmula, porque el agregar paréntesis al pedo no lo tenemos definido en la lista de reglas.
+
+	\item $p \o \no p \y q)$
+	      No es fórmula, se parece a una mezcla de las reglas 4 y 5 pero faltan paréntesis onda $((p \o \no p) \y q)$ o  $(p \o (\no p \y q))$\\
+	      \red{¿Mejores palabras para describir lo que pasa?}
+
+	\item $(True \y True \y True)$\\
+	      Es fórmula por regla 4.
+\end{enumerate}
+
+\ejercicio\FiveStar\ 
+Determinar el valor de verdad de las siguiente fórmulas:
+
+\begin{enumerate}[label=\arabic*. ]
+	\item Cuando el valor de verdad de a, b y c es verdadero, mientras que el de x e y es falso.
+	\item Cuando el valor de verdad de a, b y c es falso, mientras que el de x e y es verdadero.
+\end{enumerate}
+
+\begin{multicols}{2}
+	\begin{enumerate}[label=\alph*)]
+		\item $(\no a \o b) $
+		      \begin{enumerate}[label=\arabic*. ]
+			      \item V
+			      \item V
+		      \end{enumerate}
+		\item $(c \o (y \y x) \o b)$
+		      \begin{enumerate}[label=\arabic*. ]
+			      \item V
+			      \item V
+		      \end{enumerate}
+		\item $\no (c \o y)$ \hacer
+		\item \hacer
+		\item \hacer
+		\item $(((c \o y) \y (x \o b)) \sisolosi (c \o (y \y x) \o b))$
+		      \begin{enumerate}[label=\arabic*. ]
+			      \item V
+			      \item V
+		      \end{enumerate}
+		\item $(\no c \y \no y) $
+		      \begin{enumerate}[label=\arabic*. ]
+			      \item F
+			      \item F
+		      \end{enumerate}
+	\end{enumerate}
+
+\end{multicols}
+\[
+	\begin{array}{|c|c|c|c|c|c|c|c|}
+		\hline
+		p & q & p \y q & p \o q & p \sisolosi q \\ \hline
+		V & V & V      & V      & V             \\
+		V & F & F      & V      & F             \\
+		F & V & F      & V      & F             \\
+		F & F & F      & F      & V             \\
+		\hline
+	\end{array}
+\]
+\ejercicio Determinar, utilizando tablas de verdad,
+si las siguientes fórmulas son tautologías,
+contradicciones o contingencias.
+
+Nota: Contigencia es que depende de los valores que le de a las proposiciones.
+
+\[
+	\begin{array}{|c|c|c|c|c|c|c|c|}
+		\hline
+		p & q & p \y q & p \o q & p \entonces q & p \sisolosi q \\ \hline
+		V & V & V      & V      & V             & V             \\
+		V & F & F      & V      & F             & F             \\
+		F & V & F      & V      & V             & F             \\
+		F & F & F      & F      & V             & V             \\
+		\hline
+	\end{array}
+\]
+\begin{enumerate}[label=\alph*)]
+	\item $(p\o q)$
+	\item
+	\item
+	\item
+	\item
+	\item
+	\item
+	\item
+	\item
+	\item $(p\entonces(q \entonces r)) \entonces ((p\entonces q) \entonces (p\entonces r)))$ \\
+	      \scriptsize
+	      $ \begin{array}{|c|c|c|c|c|c|c|c|c|}
+			      \hline
+			      p & q & r & (q \entonces r ) & (p \entonces (q \entonces r) ) & (p \entonces q) & (p\entonces r) & (p \entonces q) \entonces (p \entonces r)) & (p \entonces (q\entonces r) \entonces (p\entonces q) \entonces (p \entonces r)) \\  \hline
+			      V & V & V & V                & V                              & V               & V              & V                                          & V                                                                               \\
+			      V & V & F & F                & F                              & V               & F              & F                                          & V                                                                               \\
+			      V & F & V & V                & V                              & F               & V              & V                                          & V                                                                               \\
+			      V & F & F & V                & V                              & F               & F              & V                                          & V                                                                               \\
+			      F & V & V & V                & V                              & V               & V              & V                                          & V                                                                               \\
+			      F & V & F & F                & V                              & V               & V              & V                                          & V                                                                               \\
+			      F & F & V & V                & V                              & V               & V              & V                                          & V                                                                               \\
+			      F & F & F & V                & V                              & V               & V              & V                                          & V                                                                               \\ \hline
+		      \end{array} $\\
+\end{enumerate}
+
+\ejercicio\FiveStar\   Dadas las proposiciones lógicas $\alpha$ y $\beta$, se dice que $\alpha$ es más fuerte que $\beta$ si y solo si $\alpha \entonces \beta$ es una tautología.
+En este caso, también decimos que $\beta$ es más débil que $\alpha$. Determinar la relación de fuerza de los siguientes pares de fórmulas:
+\begin{enumerate}[label=\alph*)]
+	\item $True$, $False$\\
+	      $True \entonces False \sisolosi False \flecha{por lo}[tanto] True$ es más débil que $False$. En particular  $True$ es la fórmula más débil del mundo.
+
+	\item $(p \y q)$, $(p \o q)$.\\
+	      Chequeo si $(p \y q) \entonces (p \o q)$ es tautología.\\
+	      \[
+		      \begin{array}{|c|c|c|c|c|}
+			      \hline
+			      p & q & (p \y q ) & (p \o q ) & (p \y q) \entonces (p \o q) \\ \hline
+			      V & V & V         & V         & V                           \\
+			      V & F & F         & V         & V                           \\
+			      F & V & F         & V         & V                           \\
+			      F & F & F         & F         & V                           \\ \hline
+		      \end{array}
+	      \]\\
+	      Concluyendo que es una tautología, y $(p \y q)$ es más fuerte que $(p \o q)$, la fuerza o $(p \o q)$ es más débil.
+	\item $True$, $True$.\\
+	      Sale que True es más débil que ella misma y se me explotó la cabeza.\\
+	      \red{revisar!}
+	\item \hacer
+	\item $False$, $False$.\\
+	      Sale que False es más débil que ella misma y se me explotó la cabeza.\\
+	      \red{revisar!}
+
+	\item \hacer
+	\item $p$, $q$. En este caso no hay una tautología.
+	      \red{Cómo se responde? Ninguna? o $p$ es más débil que $q$}
+	\item \hacer
+
+\end{enumerate}
+
+%5
+\ejercicio ¿Cuál es la fórmula proposicional más fuerte y cuál la más débil de las que aparecen en el ejercicio anterior?\\
+$True$ y $False$
+%6
+\ejercicio\FiveStar\ 
+\begin{multicols}{2}
+	\begin{enumerate}[label=\alph*)]
+		\item
+		\item
+		\item
+		\item
+		      %e
+		\item $(p \y p) \equivale p$ (Idempotencia de la conjunción)\\
+		      $
+			      \begin{array}{|c|c|c|}
+				      \hline
+				      p & p & p \y p \\ \hline
+				      T & T & T      \\
+				      F & F & F      \\ \hline
+			      \end{array}
+		      $
+		\item $(p \o p) \equivale p$ (Idempotencia de la disyunción)\\
+		      $
+			      \begin{array}{|c|c|c|}
+				      \hline
+				      p & p & p \o p \\ \hline
+				      T & T & T      \\
+				      F & F & F      \\ \hline
+			      \end{array}
+		      $
+		\item
+		\item
+		\item
+		\item
+		\item
+		\item
+		\item
+		\item
+		\item
+		\item
+		\item
+		\item
+		\item
+		\item
+		\item
+		\item
+		\item
+	\end{enumerate}
+\end{multicols}
+
+%7
+\ejercicio
+%8
+\ejercicio\FiveStar\ 
+%9
+\ejercicio
+%10
+\ejercicio\FiveStar\ 
+%11
+\ejercicio
+
+%12
+\ejercicio
+
+\section{Lógica ternaria o trivalente (Verdadero, Falso o Indefinido)}
+
+%13
+\ejercicio\FiveStar\ 
+fdsf
+%14
+\ejercicio\FiveStar\ 
+%15
+\ejercicio\FiveStar\ 
+%16
+\ejercicio\FiveStar\ 
+%17
+\ejercicio\FiveStar\ 
+
+%18
+\ejercicio
+
+%19
+\ejercicio
+
+\section{Fórmulas del lenguaje de especificación}
+%20
+\ejercicio\FiveStar\
+%21
+\ejercicio
+
+
+% a)
+% \begin{itemize}
+% 	\item $((p \y p) \y p) \entonces p$
+% 	\item True
+% 	\item
+% 	      $ \begin{array}{|c|c|c|c|c||}
+% 			      \hline
+% 			      p      & q      & p \ly q & p \lo q & p \lentonces q \\  \hline
+% 			      V      & V      & V       & V       & V              \\
+% 			      V      & V      & F       & V       & F              \\
+% 			      F      & F      & F       & V       & V              \\
+% 			      F      & F      & F       & F       & V              \\ \hline
+%
+% 			      V      & \indef & \indef  & V       & \indef         \\
+% 			      F      & \indef & F       & \indef  & V              \\
+% 			      \indef & V      & \indef  & \indef  & \indef         \\
+% 			      \indef & F      & \indef  & \indef  & \indef         \\
+% 			      \indef & V      & \indef  & \indef  & \indef         \\ \hline
+% 		      \end{array} $\\
+% \end{itemize}
+\end{document}
