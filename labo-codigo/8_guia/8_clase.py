@@ -268,7 +268,16 @@ def buscar_el_maximo(p: Pila) -> int:
 # ================================
 # ejercicio 11
 # ================================
-# def esta_bien_balanceada(s: str) -> bool:
+def esta_bien_balanceada(s: str) -> bool:
+    p: Pila[chr] = Pila()
+    for char in s:
+        if char == "(":
+            p.put(char)
+        elif char == ")":
+            if p.empty():
+                return False
+            p.get()
+    return p.empty()
 
 
 # ================================
@@ -297,11 +306,11 @@ def evaluar_expresion(s: str) -> float:
             p_operandos.put(t)
         else:
             segundo_operando: str = p_operandos.get()
-            print(f"segundo_operando: {segundo_operando}")
+            # print(f"segundo_operando: {segundo_operando}")
             primer_operando: str = p_operandos.get()
-            print(f"primer_operando: {primer_operando}")
+            # print(f"primer_operando: {primer_operando}")
             operador: str = t
-            print(f"operador: {operador}")
+            # print(f"operador: {operador}")
             operacion = calcular(primer_operando, segundo_operando, operador)
             p_operandos.put(operacion)
 
@@ -310,21 +319,166 @@ def evaluar_expresion(s: str) -> float:
     return answer
 
 
+# ================================
+# COLAS
+# ================================
+
+
 def copiar_cola(original: Cola) -> Cola:
-    res: Cola = Cola()
+    answer: Cola = Cola()
     cola_tmp: Cola = Cola()
 
     while not (original.empty()):
         v = original.get()
-        res.put(v)
+        answer.put(v)
         cola_tmp.put(v)
 
     while not (cola_tmp.empty()):
         v = cola_tmp.get()
         original.put(v)
 
+    return answer
+
+
+# ================================
+# ejercicio 13
+# ================================
+def generar_nros_al_azar_cola(cantidad: int, desde: int, hasta: int) -> Cola[int]:
+    c: Cola[int] = Cola()
+    for _ in range(cantidad):
+        x: int = random.randint(desde, hasta)
+        c.put(x)
+    return c
+
+
+# ================================
+# ejercicio 14
+# ================================
+def cantidad_elementos_cola(c: Cola) -> int:
+    res: int = 0
+    # print(f"c: {c.queue}")
+    c_copy: Cola = copiar_cola(c)
+
+    while not c_copy.empty():
+        c_copy.get()
+        res += 1
+
+    # print(f"c: {c.queue}")
+    # print(f"c_copy: {c_copy.queue}")
     return res
 
+
+# ================================
+# ejercicio 15
+# ================================
+def buscar_el_maximo_cola(c: Cola[int]) -> int:
+    if cantidad_elementos_cola(c) == 0:
+        return -1
+    c_copy: Cola = copiar_cola(c)
+    maximo: int = c_copy.get()
+
+    while not c_copy.empty():
+        candidato: int = c_copy.get()
+        if candidato >= maximo:
+            maximo = candidato
+    return maximo
+
+
+# ================================
+# ejercicio 16
+# ================================
+# ejercicio 16.1
+
+
+def armar_secuencia_de_bingo_modificada(tamanio: int) -> Cola[int]:
+    respuesta: Cola[int] = Cola()
+    while cantidad_elementos_cola(respuesta) < tamanio:
+        candidato: int = random.randint(0, 99)
+        if not pertenece_a_cola(candidato, respuesta):
+            respuesta.put(candidato)
+    return respuesta
+
+
+# ejercicio 16.2
+def pertenece_a_cola(e: int, c: Cola) -> bool:
+    c_copy: Cola = copiar_cola(c)
+    while not c_copy.empty():
+        elemento_cola: int = c_copy.get()
+        if e == elemento_cola:
+            return True
+    return False
+
+
+def jugar_carton_de_bingo(carton: Cola[int], bolillero: Cola[int]) -> int:
+    aciertos: int = 0
+    jugadas: int = 0
+    bolillero_copy = copiar_cola(bolillero)
+    while not bolillero_copy.empty() and aciertos < 12:
+        jugada: int = bolillero_copy.get()
+        jugadas += 1
+        if pertenece_a_cola(jugada, carton):
+            aciertos += 1
+    return jugadas
+
+
+# ================================
+# ejercicio 17
+# ================================
+def n_pacientes_urgentes(c: Cola[(int, str, str)]) -> int:
+    respuesta: int = 0
+    d: Cola[(int, str, str)] = copiar_cola(c)
+
+    while not d.empty():
+        tupla: tuple[int, str, str] = d.get()
+        prioridad: int = tupla[0]
+        if prioridad <= 3:
+            respuesta += 1
+    print(c.queue)
+    return respuesta
+
+
+# ================================
+# ejercicio 18
+# ================================
+def concatenar_colas(c1: Cola[any], c2: Cola[any]) -> Cola[any]:
+    while not c2.empty():
+        c1.put(c2.get())
+    return c1
+
+
+def atencion_a_clientes(c: Cola[str, int, bool, bool]) -> Cola[(str, int, bool, bool)]:
+    ans: Cola[(str, int, bool, bool)] = Cola()
+
+    c_copy: Cola[(str, int, bool, bool)] = copiar_cola(c)
+
+    prioridad: Cola[(str, int, bool, bool)] = Cola()
+    preferencial: Cola[(str, int, bool, bool)] = Cola()
+    resto: Cola[(str, int, bool, bool)] = Cola()
+
+    while not c_copy.empty():
+        cliente: tuple[(str, int, bool, bool)] = c_copy.get()
+        if cliente[3] == True:
+            prioridad.put(cliente)
+        elif cliente[3] == False and cliente[2] == True:
+            preferencial.put(cliente)
+        else:
+            resto.put(cliente)
+
+    for cola in [prioridad, preferencial, resto]:
+        ans = concatenar_colas(ans, cola)
+
+    return ans
+
+clientes = Cola()
+clientes.put(("a",1,True,False))
+clientes.put(("b",2,True,False))
+clientes.put(("c",3,False,True))
+clientes.put(("d",4,True,True))
+clientes.put(("e",5,False,False))
+clientes.put(("g",7,False,False))
+clientes.put(("h",8,False,False))
+clientes.put(("f",9,False,True))
+clientes.put(("f",10,True,False))
 
 """
 notas:
@@ -341,97 +495,88 @@ notas:
 """
 
 
-def imprimir(lista_o_cola):
-    print("----")
-    while not lista_o_cola.empty():
-        print(lista_o_cola.get())
-
-
-# ================================
-# ejercicio 13
-# ================================
-
-
-def generar_nros_al_azar(cantidad: int, desde: int, hasta) -> Cola[int]:
-    res: Cola[int] = Cola()
-    for _ in range(cantidad):  # No me importa la variable
-        x: int = random.randint(desde, hasta)
-        res.put(x)
-    return res
-
-
-def armar_secuencia_de_bingo() -> Cola[int]:
-    res: Cola[int] = Cola()
-    nros: list[int] = []
-    while len(nros) < 100:
-        v = random.randint(0, 99)
-        if not pertenece(nros, v):
-            nros.append(v)
-            res.put(v)
-    return res
-
-
-def jugar_bingo(carton: list, bolillero: Cola) -> int:
-    res: int = 0
-    copia = copiar_cola(bolillero)
-    aciertos: int = 0
-    while aciertos < len(carton):
-        v = copia.get()
-        res += 1
-        if pertenece(carton, v):
-            aciertos += 1
-    return res
-
-
-# ================================
-# Diccionarios:
-mi_dicc: dict[str, str] = {"auto": "car", "sol": "sun", "luna": "moon"}
-mi_dicc["clave_nueva"] = "nuevo_valor"  # Nuevo par
-mi_dicc["clave_nueva2"] = "nuevo_valor2"  # Nuevo par
-mi_dicc["clave_nueva2"] = "nuevo_valor3"  # Sobreescribir el valor del par
-
-otro_dic: dict[str, str] = {}  # creo un dicc vacio
-claves: list[str] = mi_dicc.keys()
-for clave in claves:
-    valor: str = mi_dicc[clave]
-    print(clave + " - " + valor)
-    # modo python es: print(f'{clave} - {valor})
-    otro_dic[clave] = valor  # lo agego al nuevo diccionario.
-
+# def imprimir(lista_o_cola):
+#     print("----")
+#     while not lista_o_cola.empty():
+#         print(lista_o_cola.get())
 #
-# .items()
-# .keys()
-# .values()
-
-
-# ================================
-# ejercicio  19
-# ================================
-def palabras_de_arch(nombre_archivo: str) -> dict[int, int]:
-    ls_palabras: list[str] = archivo_a_lista_de_palabras(nombre_archivo)
-    res: dict[int, int] = {}
-    for palabra in ls_palabras:
-        long_palabra = len(palabra)
-        if long_palabra in res.keys():
-            res[long_palabra] += 1
-        else:
-            res[long_palabra] = 1
-    return res
-
-
-# ================================
-# ejercicio  21
-# ================================
-def la_palabra_mas_frecuente(nombre_archivo: str) -> str:
-    palabras: list[chr] = palabras_de_arch(nombre_archivo)
-    contador: dict[str, int] = {}
-
-    for palabra in palabras:
-        if palabra in contador:
-            # contador[palabra] = contador[palabra] + 1
-            contador[palabra] += 1
-        else:
-            contador[palabra] += 1
+#
+# # ================================
+# # ejercicio 13
+# # ================================
+# def armar_secuencia_de_bingo() -> Cola[int]:
+#     res: Cola[int] = Cola()
+#     nros: list[int] = []
+#     while len(nros) < 100:
+#         v = random.randint(0, 99)
+#         if not pertenece(nros, v):
+#             nros.append(v)
+#             res.put(v)
+#     return res
+#
+#
+# def jugar_bingo(carton: list, bolillero: Cola) -> int:
+#     res: int = 0
+#     copia = copiar_cola(bolillero)
+#     aciertos: int = 0
+#     while aciertos < len(carton):
+#         v = copia.get()
+#         res += 1
+#         if pertenece(carton, v):
+#             aciertos += 1
+#     return res
+#
+#
+# # ================================
+# # Diccionarios:
+# mi_dicc: dict[str, str] = {"auto": "car", "sol": "sun", "luna": "moon"}
+# mi_dicc["clave_nueva"] = "nuevo_valor"  # Nuevo par
+# mi_dicc["clave_nueva2"] = "nuevo_valor2"  # Nuevo par
+# mi_dicc["clave_nueva2"] = "nuevo_valor3"  # Sobreescribir el valor del par
+#
+# otro_dic: dict[str, str] = {}  # creo un dicc vacio
+# claves: list[str] = mi_dicc.keys()
+# for clave in claves:
+#     valor: str = mi_dicc[clave]
+#     print(clave + " - " + valor)
+#     # modo python es: print(f'{clave} - {valor})
+#     otro_dic[clave] = valor  # lo agego al nuevo diccionario.
+#
+# #
+# # .items()
+# # .keys()
+# # .values()
+#
+#
+# # ================================
+# # ejercicio  19
+# # ================================
+# def palabras_de_arch(nombre_archivo: str) -> dict[int, int]:
+#     ls_palabras: list[str] = archivo_a_lista_de_palabras(nombre_archivo)
+#     res: dict[int, int] = {}
+#     for palabra in ls_palabras:
+#         long_palabra = len(palabra)
+#         if long_palabra in res.keys():
+#             res[long_palabra] += 1
+#         else:
+#             res[long_palabra] = 1
+#     return res
+#
+#
+# # ================================
+# # ejercicio  21
+# # ================================
+# def la_palabra_mas_frecuente(nombre_archivo: str) -> str:
+#     palabras: list[chr] = palabras_de_arch(nombre_archivo)
+#     contador: dict[str, int] = {}
+#
+#     for palabra in palabras:
+#         if palabra in contador:
+#             # contador[palabra] = contador[palabra] + 1
+#             contador[palabra] += 1
+#         else:
+#             contador[palabra] += 1
+#
 
 # ================================
 # ejercicio  22
