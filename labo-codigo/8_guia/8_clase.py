@@ -65,6 +65,20 @@ def archivo_a_lista_de_palabras(nombre_archivo: str) -> list[str]:
     return respuesta
 
 
+def copiar_pila(p: Pila) -> Pila:
+    nueva_p: Pila = Pila()
+    lista_tmp: list = []
+
+    while not p.empty():
+        lista_tmp.append(p.get())
+
+    for ind in range(len(lista_tmp) - 1, -1, -1):
+        p.put(lista_tmp[ind])
+        nueva_p.put(lista_tmp[ind])
+
+    return nueva_p
+
+
 # =========================================
 # =========================================
 
@@ -119,9 +133,9 @@ def cantidad_apariciones(nombre_archivo: str, palabra: str) -> int:
 # ================================
 def linea_es_comentario(linea: str) -> bool:
     for char in linea:
-        if not char == '#' and not char == ' ':
+        if not char == "#" and not char == " ":
             return False
-        elif char == '#':
+        elif char == "#":
             return True
 
 
@@ -130,10 +144,10 @@ def clonar_sin_comentarios(nombre_archivo: str) -> None:
     lineas_sin_comentarios: list[str] = []
     for linea in f.readlines():
         if not linea_es_comentario(linea):
-            lineas_sin_comentarios += linea 
+            lineas_sin_comentarios += linea
     f.close()
 
-    new_f = open("sin_comentarios","w", encoding="utf8")
+    new_f = open("sin_comentarios", "w", encoding="utf8")
     new_f.truncate()
     for linea in lineas_sin_comentarios:
         new_f.write(linea)
@@ -143,24 +157,27 @@ def clonar_sin_comentarios(nombre_archivo: str) -> None:
 # ================================
 # ejercicio 3
 # ================================
+# De un archivo de texto, crea una lista con las lineas
+# separadas por "\n"
 def archivo_a_lineas(nombre_archivo: str) -> list[str]:
-    archivo = open(nombre_archivo, 'r', encoding = 'utf8')
+    archivo = open(nombre_archivo, "r", encoding="utf8")
     respuesta: list[str] = []
     linea: str = ""
     for char in archivo.read():
-        if char == '\n' and linea != '' and linea[-1] != '\n':
-            respuesta.append(linea + '\n')
+        if char == "\n" and linea != "" and linea[-1] != "\n":
+            respuesta.append(linea + "\n")
             linea = ""
         else:
             linea += char
     archivo.close()
     return respuesta
 
+
 def invertir_lineas(nombre_archivo: str) -> None:
     lineas_de_archivo: list[str] = archivo_a_lineas(nombre_archivo)
     print(lineas_de_archivo)
 
-    new_file = open("lineas_invertidas",'w', encoding = 'utf8')
+    new_file = open("lineas_invertidas", "w", encoding="utf8")
     new_file.truncate()
     for ind in range(len(lineas_de_archivo) - 1, -1, -1):
         new_file.write(lineas_de_archivo[ind])
@@ -168,7 +185,129 @@ def invertir_lineas(nombre_archivo: str) -> None:
 
 
 # ================================
+# ejercicio 4
+# ================================
+def agregar_frase_al_final(nombre_archivo: str, frase: str) -> None:
+    archivo = open(nombre_archivo, "+a", encoding="utf8")
+    archivo.write(frase)
+    archivo.close()
+
+
+# ================================
+# ejercicio 5
+# ================================
+def agregar_frase_al_principio(nombre_archivo: str, frase: str) -> None:
+    file = open(nombre_archivo, "r+", encoding="utf8")
+    contenido = file.read()
+    file.seek(0)
+    file.write(frase + "\n" + contenido)
+    file.close()
+
+
+def agregar_frase_al_principio2(nombre_archivo: str, frase: str) -> None:
+    contenido: str = ""
+    file = open(nombre_archivo, "r", encoding="utf8")
+    contenido = file.read()
+    file.close()
+
+    file = open(nombre_archivo, "w", encoding="utf8")
+    file.write(frase + "\n" + contenido)
+    file.close()
+
+
+# ================================
+# ejercicio 6
+# ================================
+# def listar_palabras_de_archivo(nombre_archivo) -> None:
+#     f = open(nombre_archivo,"r+b")
+#     secuencia_bytes : list[bytes] = f.read()
+#     for b in secuencia_bytes:
+#
+
+
+# ================================
 # PILAS
+# ================================
+# ejercicio 8
+# ================================
+def generar_nros_al_azar(cantidad: int, desde: int, hasta: int) -> Pila[int]:
+    pila = Pila()
+    for _ in range(cantidad):
+        pila.put(random.randint(desde, hasta))
+    return pila
+
+
+# ================================
+# ejercicio 9
+# ================================
+def cantidad_elementos(p: Pila) -> int:
+    cantidad: int = 0
+    p_tmp: Pila[int] = copiar_pila(p)
+    while not p_tmp.empty():
+        p_tmp.get()
+        cantidad += 1
+    return cantidad
+
+
+# ================================
+# ejercicio 10
+# ================================
+def buscar_el_maximo(p: Pila) -> int:
+    if cantidad_elementos(p) == 0:
+        return -1
+
+    p_tmp: Pila[int] = copiar_pila(p)
+    maximo: int = p_tmp.get()
+    while not p_tmp.empty():
+        candidato: int = p_tmp.get()
+        if maximo <= candidato:
+            maximo = candidato
+    return maximo
+
+
+# ================================
+# ejercicio 11
+# ================================
+# def esta_bien_balanceada(s: str) -> bool:
+
+
+# ================================
+# ejercicio 12
+# ================================
+def calcular(a: str, b: str, operador: str) -> float:
+    a: float = float(a)
+    b: float = float(b)
+    if operador == "+":
+        return a + b
+    elif operador == "-":
+        return a - b
+    elif operador == "*":
+        return a * b
+    else:
+        return a / b
+
+
+def evaluar_expresion(s: str) -> float:
+    operandos: list[str] = ["+", "-", "*", "/"]
+    p_operandos: Pila[chr] = Pila()
+    tokens: list[str] = my_split(s)
+
+    for t in tokens:
+        if t not in operandos:
+            p_operandos.put(t)
+        else:
+            segundo_operando: str = p_operandos.get()
+            print(f"segundo_operando: {segundo_operando}")
+            primer_operando: str = p_operandos.get()
+            print(f"primer_operando: {primer_operando}")
+            operador: str = t
+            print(f"operador: {operador}")
+            operacion = calcular(primer_operando, segundo_operando, operador)
+            p_operandos.put(operacion)
+
+    answer: float = float(p_operandos.get())
+
+    return answer
 
 
 def copiar_cola(original: Cola) -> Cola:
@@ -268,48 +407,21 @@ for clave in claves:
 # ================================
 # ejercicio  19
 # ================================
-def palabras_de_arch(nombre_archivo: str) -> list[str]:
-    with open(nombre_archivo, "r") as archivo:
-        contenido: str = archivo.read()
-        return mi_split(contenido)  # es lo mismo que:contenido.split()
-
-
-def mi_split(linea: str) -> list[str]:
-    res: list[str] = []
-    palabra = ""
-    for char in linea:
-        if char == " " or char == "\t" or char == "\n" or char == "\r":
-            if len(palabra) > 0:
-                res.append(palabra)
-                palabra = ""
-            else:
-                palabra += char
-        if len(palabra) > 0:
-            res.append(palabra)
-
-        return res
-
-
-def pertenece_dict(d, k):
-    lista = list(d.keys())
-    for e in lista:
-        if e == k:
-            return True
-    return False
-
-
-def agrupar(nom_arch) -> dict:
-    palabras: list[str] = palabras_de_arch(nom_arch)
-    res = {}
-    for p in palabras:
-        t = len(p)
-        if pertenece_dict(res, t):
-            res[t] = res[t] + 1
+def palabras_de_arch(nombre_archivo: str) -> dict[int, int]:
+    ls_palabras: list[str] = archivo_a_lista_de_palabras(nombre_archivo)
+    res: dict[int, int] = {}
+    for palabra in ls_palabras:
+        long_palabra = len(palabra)
+        if long_palabra in res.keys():
+            res[long_palabra] += 1
         else:
-            res[t] = 1
+            res[long_palabra] = 1
     return res
 
 
+# ================================
+# ejercicio  21
+# ================================
 def la_palabra_mas_frecuente(nombre_archivo: str) -> str:
     palabras: list[chr] = palabras_de_arch(nombre_archivo)
     contador: dict[str, int] = {}
@@ -321,5 +433,8 @@ def la_palabra_mas_frecuente(nombre_archivo: str) -> str:
         else:
             contador[palabra] += 1
 
+# ================================
+# ejercicio  22
+# ================================
 
 # pastebin.com/xabaQTyv

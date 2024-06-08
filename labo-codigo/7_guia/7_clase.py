@@ -1,3 +1,18 @@
+import numpy as np
+
+# ================================
+# Auxiliares
+# ================================
+def copiar_lista(ls: list) -> list:
+    res: list = []
+    for item in ls:
+        res.append(item)
+    return res
+# ================================
+# Fin Auxiliares
+# ================================
+
+
 # ================================
 # ejercicio 1
 # ================================
@@ -356,3 +371,59 @@ def filas_ordenadas(m: list[list[int]]) -> list[bool]:
     for fila in m:
         res.append(ordenados(fila))
     return res
+
+# ejercicio 5.5
+def get_nth_col(A: list[list[float]], col: int) -> list[float]:
+    columna: list[float] = []
+    col -= 1
+    for fila in A:
+        columna.append(fila[col])
+    return columna
+
+def producto_interno(fila: list[float], columna: list[float]) -> float:
+    res: float = 0
+    for ind in range(len(fila)):
+        res += fila[ind] * columna[ind]
+    return res
+
+def producto_matricial(A: list[list[float]], B: list[list[float]]) -> list[list[float]]:
+    res: list[list[float]] = []
+    fila_res: list[float] = []
+    for fila in A:
+        for ind in range(1, len(B) + 1):
+            columna = get_nth_col(B, ind)
+            elemento_res: float = producto_interno(fila, columna)
+            fila_res.append(elemento_res)
+        res.append(fila_res)
+        fila_res = []
+
+    return res
+
+def producto_matricial2(A: list[list[float]], B: list[list[float]]) -> list[list[float]]:
+    respuesta: list[list[float]] = []
+    respuesta_fila: list[float] = []
+    elemento: float = 0
+
+    filas: int = len(A)
+    columnas: int = len(A[1])
+    productos: int = columnas
+
+    for i in range(filas):
+        for j in range(columnas):
+            for k in range(productos):
+                elemento +=  A[i][k] * B[k][j]
+            respuesta_fila.append(elemento)
+            elemento = 0
+        respuesta.append(respuesta_fila)
+        respuesta_fila = []
+    return respuesta
+
+
+A = np.random.random((3,3))
+B = copiar_lista(A)
+for _ in range(1000):
+    print(B)
+    B = producto_matricial(A,B)
+
+
+
