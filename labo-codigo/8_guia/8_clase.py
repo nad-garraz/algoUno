@@ -356,15 +356,12 @@ def generar_nros_al_azar_cola(cantidad: int, desde: int, hasta: int) -> Cola[int
 # ================================
 def cantidad_elementos_cola(c: Cola) -> int:
     res: int = 0
-    # print(f"c: {c.queue}")
     c_copy: Cola = copiar_cola(c)
 
     while not c_copy.empty():
         c_copy.get()
         res += 1
 
-    # print(f"c: {c.queue}")
-    # print(f"c_copy: {c_copy.queue}")
     return res
 
 
@@ -469,64 +466,18 @@ def atencion_a_clientes(c: Cola[str, int, bool, bool]) -> Cola[(str, int, bool, 
 
     return ans
 
+
 clientes = Cola()
-clientes.put(("a",1,True,False))
-clientes.put(("b",2,True,False))
-clientes.put(("c",3,False,True))
-clientes.put(("d",4,True,True))
-clientes.put(("e",5,False,False))
-clientes.put(("g",7,False,False))
-clientes.put(("h",8,False,False))
-clientes.put(("f",9,False,True))
-clientes.put(("f",10,True,False))
+clientes.put(("a", 1, True, False))
+clientes.put(("b", 2, True, False))
+clientes.put(("c", 3, False, True))
+clientes.put(("d", 4, True, True))
+clientes.put(("e", 5, False, False))
+clientes.put(("g", 7, False, False))
+clientes.put(("h", 8, False, False))
+clientes.put(("f", 9, False, True))
+clientes.put(("f", 10, True, False))
 
-"""
-notas:
-    colas(FIFO):
-        c = Cola()
-        c.put(elem)
-        c.get() -> primer elem: 
-        c.empty()
-    pilas(LIFO):
-        p.Pila()
-        p.put(elem)
-        p.get() -> último elem
-        p.empty()
-"""
-
-
-# def imprimir(lista_o_cola):
-#     print("----")
-#     while not lista_o_cola.empty():
-#         print(lista_o_cola.get())
-#
-#
-# # ================================
-# # ejercicio 13
-# # ================================
-# def armar_secuencia_de_bingo() -> Cola[int]:
-#     res: Cola[int] = Cola()
-#     nros: list[int] = []
-#     while len(nros) < 100:
-#         v = random.randint(0, 99)
-#         if not pertenece(nros, v):
-#             nros.append(v)
-#             res.put(v)
-#     return res
-#
-#
-# def jugar_bingo(carton: list, bolillero: Cola) -> int:
-#     res: int = 0
-#     copia = copiar_cola(bolillero)
-#     aciertos: int = 0
-#     while aciertos < len(carton):
-#         v = copia.get()
-#         res += 1
-#         if pertenece(carton, v):
-#             aciertos += 1
-#     return res
-#
-#
 # # ================================
 # # Diccionarios:
 # mi_dicc: dict[str, str] = {"auto": "car", "sol": "sun", "luna": "moon"}
@@ -578,8 +529,66 @@ notas:
 #             contador[palabra] += 1
 #
 
+
 # ================================
 # ejercicio  22
 # ================================
+def visitar_sitio(historiales: dict[str, Pila[str]], usuario: str, sitio: str) -> None:
+    p: Pila[str] = Pila()
+    if usuario in historiales.keys():
+        historiales[usuario].put(sitio)
+    else:
+        historiales[usuario] = p  # Meto pila para usuario y luego jugar
+        historiales[usuario].put(sitio)
 
+
+def navegar_atras(historiales: dict[str, Pila[str]], usuario: str) -> None:
+    if usuario in historiales.keys():
+        historiales[usuario].get()
+
+
+historiales = {}
+visitar_sitio(historiales, "YoMama", "duckduckgo.com")
+visitar_sitio(historiales, "YoMama", "wiki.archlinux.org")
+navegar_atras(historiales, "YoMama")
+visitar_sitio(historiales, "Pepito", "altavista.com")
+
+
+# ================================
+# ejercicio  23
+# ================================
+def agregar_producto(
+    inventario: dict[str : dict[str:int]], nombre: str, precio: float, cantidad: int
+) -> None:
+    inventario[nombre] = {"precio": precio, "cantidad": cantidad}
+
+
+def actualizar_stock(
+    inventario: dict[str : dict[str:int]], nombre: str, cantidad: int
+) -> None:
+    inventario[nombre]["cantidad"] = cantidad
+
+
+def actualizar_precios(
+    inventario: dict[str : dict[str:int]], nombre: str, precio: float
+) -> None:
+    inventario[nombre]["precio"] = precio
+
+
+def calcular_valor_inventario(inventario: dict[str : dict[str:int]]) -> float:
+    total: float = 0
+    for d in inventario.values():
+        total += d["precio"] * d["cantidad"]
+    return total
+
+
+inventario = {}
+agregar_producto(inventario, "Camisa", 20.0, 50)
+agregar_producto(inventario, "Pantalón", 30.0, 30)
+actualizar_stock(inventario, "Camisa", 10)
+valor_total = calcular_valor_inventario(inventario)
+print(f"Valor total del inventario: {valor_total}")
+
+
+# (☞⌐▀͡ ͜ʖ͡▀ )☞
 # pastebin.com/xabaQTyv

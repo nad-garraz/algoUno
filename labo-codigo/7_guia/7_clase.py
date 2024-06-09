@@ -419,9 +419,10 @@ def producto_matricial2(A: list[list[float]], B: list[list[float]]) -> list[list
     return respuesta
 
 
-A = np.random.random((3,3))
+# A = np.random.random((3,3))
+A = [[1,1],[0.5, 0.5]]
 B = copiar_lista(A)
-for _ in range(1000):
+for _ in range(10):
     print(B)
     B = producto_matricial(A,B)
 
