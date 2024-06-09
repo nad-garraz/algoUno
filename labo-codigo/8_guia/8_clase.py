@@ -478,58 +478,19 @@ clientes.put(("h", 8, False, False))
 clientes.put(("f", 9, False, True))
 clientes.put(("f", 10, True, False))
 
-# # ================================
-# # Diccionarios:
-# mi_dicc: dict[str, str] = {"auto": "car", "sol": "sun", "luna": "moon"}
-# mi_dicc["clave_nueva"] = "nuevo_valor"  # Nuevo par
-# mi_dicc["clave_nueva2"] = "nuevo_valor2"  # Nuevo par
-# mi_dicc["clave_nueva2"] = "nuevo_valor3"  # Sobreescribir el valor del par
-#
-# otro_dic: dict[str, str] = {}  # creo un dicc vacio
-# claves: list[str] = mi_dicc.keys()
-# for clave in claves:
-#     valor: str = mi_dicc[clave]
-#     print(clave + " - " + valor)
-#     # modo python es: print(f'{clave} - {valor})
-#     otro_dic[clave] = valor  # lo agego al nuevo diccionario.
-#
-# #
-# # .items()
-# # .keys()
-# # .values()
-#
-#
-# # ================================
-# # ejercicio  19
-# # ================================
-# def palabras_de_arch(nombre_archivo: str) -> dict[int, int]:
-#     ls_palabras: list[str] = archivo_a_lista_de_palabras(nombre_archivo)
-#     res: dict[int, int] = {}
-#     for palabra in ls_palabras:
-#         long_palabra = len(palabra)
-#         if long_palabra in res.keys():
-#             res[long_palabra] += 1
-#         else:
-#             res[long_palabra] = 1
-#     return res
-#
-#
-# # ================================
-# # ejercicio  21
-# # ================================
-# def la_palabra_mas_frecuente(nombre_archivo: str) -> str:
-#     palabras: list[chr] = palabras_de_arch(nombre_archivo)
-#     contador: dict[str, int] = {}
-#
-#     for palabra in palabras:
-#         if palabra in contador:
-#             # contador[palabra] = contador[palabra] + 1
-#             contador[palabra] += 1
-#         else:
-#             contador[palabra] += 1
-#
 
-
+# ================================
+# ejercicio  19
+# ================================
+# ...
+# ================================
+# ejercicio  20
+# ================================
+# ...
+# ================================
+# ejercicio  21
+# ================================
+# ...
 # ================================
 # ejercicio  22
 # ================================
