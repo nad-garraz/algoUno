@@ -65,16 +65,18 @@ def archivo_a_lista_de_palabras(nombre_archivo: str) -> list[str]:
     return respuesta
 
 
-def copiar_pila(p: Pila) -> Pila:
-    nueva_p: Pila = Pila()
-    lista_tmp: list = []
+def copiar_pila(p: Pila[any]) -> Pila[any]:
+    nueva_p: Pila[any] = Pila()
+    pila_tmp: Pila[any] = Pila()
 
     while not p.empty():
-        lista_tmp.append(p.get())
+        a: any = p.get()
+        pila_tmp.put(a)
 
-    for ind in range(len(lista_tmp) - 1, -1, -1):
-        p.put(lista_tmp[ind])
-        nueva_p.put(lista_tmp[ind])
+    while not pila_tmp.empty():
+        a: any = pila_tmp.get()
+        p.put(a)
+        nueva_p.put(a)
 
     return nueva_p
 
@@ -109,8 +111,6 @@ def contar_lineas2(nombre_archivo: str) -> int:
 # =========================
 # ejercicio 1.2
 # =========================
-
-
 def existe_palabra(palabra: str, nombre_archivo: str) -> bool:
     lista_palabras: list[str] = archivo_a_lista_de_palabras(nombre_archivo)
     return palabra in lista_palabras
@@ -322,18 +322,16 @@ def evaluar_expresion(s: str) -> float:
 # ================================
 # COLAS
 # ================================
-
-
 def copiar_cola(original: Cola) -> Cola:
-    answer: Cola = Cola()
-    cola_tmp: Cola = Cola()
+    answer: Cola = Cola()  # Para retornar
+    cola_tmp: Cola = Cola()  # Para vaciar la lista original y volverla a llenar
 
-    while not (original.empty()):
+    while not original.empty():  # Genero la respuetas vaciando la original
         v = original.get()
         answer.put(v)
         cola_tmp.put(v)
 
-    while not (cola_tmp.empty()):
+    while not cola_tmp.empty():  # Lleno la original para que quede inalterada
         v = cola_tmp.get()
         original.put(v)
 
@@ -385,8 +383,6 @@ def buscar_el_maximo_cola(c: Cola[int]) -> int:
 # ejercicio 16
 # ================================
 # ejercicio 16.1
-
-
 def armar_secuencia_de_bingo_modificada(tamanio: int) -> Cola[int]:
     respuesta: Cola[int] = Cola()
     while cantidad_elementos_cola(respuesta) < tamanio:
@@ -521,25 +517,29 @@ visitar_sitio(historiales, "Pepito", "altavista.com")
 def agregar_producto(
     inventario: dict[str : dict[str:int]], nombre: str, precio: float, cantidad: int
 ) -> None:
-    inventario[nombre] = {"precio": precio, "cantidad": cantidad}
+    informacion_adicional = {"precio": precio, "cantidad": cantidad}
+    inventario[nombre] = informacion_adicional
 
 
 def actualizar_stock(
     inventario: dict[str : dict[str:int]], nombre: str, cantidad: int
 ) -> None:
-    inventario[nombre]["cantidad"] = cantidad
+    informacion_adicional = inventario[nombre]
+    informacion_adicional["cantidad"] = cantidad
 
 
 def actualizar_precios(
     inventario: dict[str : dict[str:int]], nombre: str, precio: float
 ) -> None:
-    inventario[nombre]["precio"] = precio
+    informacion_adicional = inventario[nombre]
+    informacion_adicional["precio"] = precio
 
 
 def calcular_valor_inventario(inventario: dict[str : dict[str:int]]) -> float:
     total: float = 0
-    for d in inventario.values():
-        total += d["precio"] * d["cantidad"]
+    # Itero en los diccionarios del inventario
+    for info_adicional_por_item in inventario.values():
+        total += info_adicional_por_item["precio"] * info_adicional_por_item["cantidad"]
     return total
 
 

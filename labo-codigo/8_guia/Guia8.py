@@ -399,7 +399,6 @@ def buscar_el_maximo(p:Pila[int]) -> int:
 
 def esta_bien_balanceada(s:str) -> bool:
     p = Pila()
-    
     for char in s:
         if char == '(': # apertura de parentesis
             p.put(char)
